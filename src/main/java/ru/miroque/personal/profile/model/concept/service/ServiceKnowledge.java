@@ -1,11 +1,12 @@
 package ru.miroque.personal.profile.model.concept.service;
 
-import java.util.List;
+import ru.miroque.personal.profile.model.concept.entity.Knowledge;
 
-public interface ServiceKnowledge<IDNT, N> {
+import javax.xml.xpath.XPathExpressionException;
+import java.util.Collection;
 
-	N getKnowledge(IDNT id);
-	N getParent(IDNT id);
-	List<N> getChildren(IDNT id);
-	
+public interface ServiceKnowledge {
+
+	Collection<Knowledge>  findByName(String name) throws XPathExpressionException;
+
 }

@@ -1,8 +1,12 @@
 package ru.miroque.personal.profile.model.concept.service;
 
+import java.util.Collection;
 import java.util.List;
 
 import ru.miroque.personal.profile.model.concept.dao.DaoKnowledge;
+import ru.miroque.personal.profile.model.concept.entity.Knowledge;
+
+import javax.xml.xpath.XPathExpressionException;
 
 public class ServiceKnowledgeXml implements ServiceKnowledge {
 	
@@ -12,19 +16,8 @@ public class ServiceKnowledgeXml implements ServiceKnowledge {
 		this.dao = dao;
 	}
 
-	public Object getKnowledge(Object id) {
-		// TODO Auto-generated method stub
-		return null;
+	@Override
+	public Collection<Knowledge> findByName(String name) throws XPathExpressionException {
+		return dao.findByName(name);
 	}
-
-	public Object getParent(Object id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public List getChildren(Object id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }
