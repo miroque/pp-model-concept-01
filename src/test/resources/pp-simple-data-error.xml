@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<personal-profile
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="personal-profile.xsd">
+	<identity>
+		<person>
+			<fio>Pan Aleks Vlad</fio>
+			<birth-date>1982-03-14</birth-date>
+		</person>
+		<account>
+			<login>miroque</login>
+		</account>
+	</identity>
+	<data>
+	</data>
+	<data>
+	</data>
+</personal-profile>

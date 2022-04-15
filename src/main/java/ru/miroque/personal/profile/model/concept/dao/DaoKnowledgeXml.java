@@ -8,10 +8,12 @@ import java.util.Collection;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.xpath.XPath;
@@ -22,6 +24,7 @@ import javax.xml.xpath.XPathFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import ru.miroque.personal.profile.model.concept.entity.Knowledge;
 import ru.miroque.personal.profile.model.concept.exception.ExceptionBadWorkWithXml;
@@ -32,24 +35,13 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 	private File storagePath;
 	private Element data;
 
-	public DaoKnowledgeXml(File file) throws Exception {
+	public DaoKnowledgeXml(File file) throws ExceptionBadWorkWithXml, SAXException, IOException, ParserConfigurationException {
 		storagePath = file;
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder documentBuilder;
-		try {
-			documentBuilder = documentBuilderFactory.newDocumentBuilder();
-			storage = documentBuilder.parse(storagePath);
-			data = extractDataNode(storage);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-//		System.out.println("dao");
-//		printDocument(storage, System.out);
-//		NodeList nodeList = storage.getChildNodes();
-//		System.out.println(nodeList.getLength());
-//		System.out.println(storage.getFirstChild().getFirstChild().getNodeName());
-//		System.out.println(storage.getFirstChild().getNodeValue());
-
+		documentBuilder = documentBuilderFactory.newDocumentBuilder();
+		storage = documentBuilder.parse(storagePath);
+		data = extractDataNode(storage);
 	}
 
 	private Element extractDataNode(Document document) throws ExceptionBadWorkWithXml {
@@ -108,11 +100,25 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 		// Давай пока без поиска, чисто, новый узел.
 		// В тег ДАТА
 		Element knowledge = storage.createElement("knowledge");
+		knowledge.setAttribute("id", item.getId().toString());
+
 		Element name = storage.createElement("name");
 		name.appendChild(storage.createTextNode(item.getName()));
+		
 		knowledge.appendChild(name);
+		
 		data.appendChild(knowledge);
 		// Эта штука должна сохранять файл.
+		saveXmlFile();
+	}
+
+	/**
+	 * Сохраняет полностью весь файл.
+	 * 
+	 * @throws TransformerFactoryConfigurationError
+	 * @throws ExceptionNotPersisted
+	 */
+	private void saveXmlFile() throws TransformerFactoryConfigurationError, ExceptionNotPersisted {
 		DOMSource source = new DOMSource(storage);
 		TransformerFactory transformerFactory = TransformerFactory.newInstance();
 		try {

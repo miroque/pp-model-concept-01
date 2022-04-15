@@ -76,19 +76,19 @@
 				</question>
 			</check>
 		</knowledge>
-		<knowledge>
+		<knowledge id="1">
 			<name>Test 0</name>
 		</knowledge>
-		<knowledge>
+		<knowledge id="2">
 			<name>Test 1</name>
 		</knowledge>
-		<knowledge>
+		<knowledge id="3">
 			<name>Test 2</name>
 		</knowledge>
-		<knowledge>
+		<knowledge id="4">
 			<name>Test 3</name>
 		</knowledge>
-		<knowledge>
+		<knowledge id="5">
 			<name>Test 4</name>
 		</knowledge>
 	</data>
