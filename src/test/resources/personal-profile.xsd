@@ -29,49 +29,73 @@
             <xs:sequence>
               <xs:element name="knowledge" maxOccurs="unbounded" minOccurs="0">
                 <xs:complexType>
-                  <xs:sequence>
-                    <xs:element type="xs:string" name="name"/>
-                    <xs:element name="knowledge" maxOccurs="unbounded" minOccurs="0">
-                      <xs:complexType>
-                        <xs:sequence>
-                          <xs:element type="xs:string" name="name"/>
-                        </xs:sequence>
-                        <xs:attribute type="xs:byte" name="level" use="optional"/>
-                        <xs:attribute type="xs:dateTime" name="recalculated" use="optional"/>
-                        <xs:attribute type="xs:byte" name="expectation" use="optional"/>
-                      </xs:complexType>
-                    </xs:element>
-                    <xs:element name="check" maxOccurs="unbounded" minOccurs="0">
-                      <xs:complexType>
-                        <xs:sequence>
-                          <xs:element type="xs:string" name="name"/>
-                          <xs:element name="question" maxOccurs="unbounded" minOccurs="0">
-                            <xs:complexType>
-                              <xs:sequence>
-                                <xs:element type="xs:string" name="name"/>
-                                <xs:element name="answer">
-                                  <xs:complexType>
-                                    <xs:simpleContent>
-                                      <xs:extension base="xs:string">
-                                        <xs:attribute type="xs:dateTime" name="given" use="optional"/>
-                                        <xs:attribute type="xs:boolean" name="valid" use="optional"/>
-                                      </xs:extension>
-                                    </xs:simpleContent>
-                                  </xs:complexType>
-                                </xs:element>
-                              </xs:sequence>
-                              <xs:attribute type="xs:dateTime" name="asked" use="optional"/>
-                            </xs:complexType>
-                          </xs:element>
-                        </xs:sequence>
-                        <xs:attribute type="xs:string" name="class" use="optional"/>
-                        <xs:attribute type="xs:dateTime" name="started" use="optional"/>
-                      </xs:complexType>
-                    </xs:element>
-                  </xs:sequence>
-                  <xs:attribute type="xs:byte" name="level" use="optional"/>
-                  <xs:attribute type="xs:dateTime" name="recalculated" use="optional"/>
-                  <xs:attribute type="xs:byte" name="expectation" use="optional"/>
+                	<xs:sequence>
+                		<xs:element type="xs:string" name="name" />
+                		<xs:element name="knowledge"
+                			maxOccurs="unbounded" minOccurs="0">
+                			<xs:complexType>
+                				<xs:sequence>
+                					<xs:element type="xs:string"
+                						name="name" />
+                				</xs:sequence>
+                				<xs:attribute type="xs:byte"
+                					name="level" use="optional" />
+                				<xs:attribute type="xs:dateTime"
+                					name="recalculated" use="optional" />
+                				<xs:attribute type="xs:byte"
+                					name="expectation" use="optional" />
+                			</xs:complexType>
+                		</xs:element>
+                		<xs:element name="check" maxOccurs="unbounded"
+                			minOccurs="0">
+                			<xs:complexType>
+                				<xs:sequence>
+                					<xs:element type="xs:string"
+                						name="name" />
+                					<xs:element name="question"
+                						maxOccurs="unbounded" minOccurs="0">
+                						<xs:complexType>
+                							<xs:sequence>
+                								<xs:element
+                									type="xs:string" name="name" />
+                								<xs:element
+                									name="answer">
+                									<xs:complexType>
+                										<xs:simpleContent>
+                											<xs:extension
+                												base="xs:string">
+                												<xs:attribute
+                													type="xs:dateTime" name="given"
+                													use="optional" />
+                												<xs:attribute
+                													type="xs:boolean" name="valid"
+                													use="optional" />
+                											</xs:extension>
+                										</xs:simpleContent>
+                									</xs:complexType>
+                								</xs:element>
+                							</xs:sequence>
+                							<xs:attribute
+                								type="xs:dateTime" name="asked" use="optional" />
+                						</xs:complexType>
+                					</xs:element>
+                				</xs:sequence>
+                				<xs:attribute type="xs:string"
+                					name="class" use="optional" />
+                				<xs:attribute type="xs:dateTime"
+                					name="started" use="optional" />
+                			</xs:complexType>
+                		</xs:element>
+                	</xs:sequence>
+                	<xs:attribute type="xs:byte" name="level"
+                		use="optional" />
+                	<xs:attribute type="xs:dateTime" name="recalculated"
+                		use="optional" />
+                	<xs:attribute type="xs:byte" name="expectation"
+                		use="optional" />
+                	<xs:attribute name="id" use="required"
+                		type="xs:int">
+                	</xs:attribute>
                 </xs:complexType>
               </xs:element>
             </xs:sequence>

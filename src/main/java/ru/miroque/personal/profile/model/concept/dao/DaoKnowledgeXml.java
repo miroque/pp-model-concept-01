@@ -108,17 +108,40 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 		knowledge.appendChild(name);
 		
 		data.appendChild(knowledge);
-		// Эта штука должна сохранять файл.
+		// Эта штука должна сохранять файл. И бросать ошибку что не сохранила, если была ошибка
 		saveXmlFile();
 	}
 
 	/**
+	 * А тут мне надо найти Один Конкретынй узел, и его обновить. А если его нету,
+	 * то создать в корневом элементе.
+	 */
+	@Override
+	public void createOrUpdate(Knowledge parent, Knowledge item) throws ExceptionNotPersisted {
+		// А тут надо найти родительский узел, он должен быть только один.
+		
+//		 boolean isExists = isItemExistsInStorage(storage, item);
+		// Давай пока без поиска, чисто, новый узел.
+		// В тег ДАТА
+		Element knowledge = storage.createElement("knowledge");
+		knowledge.setAttribute("id", item.getId().toString());
+
+		Element name = storage.createElement("name");
+		name.appendChild(storage.createTextNode(item.getName()));
+		
+		knowledge.appendChild(name);
+		
+		data.appendChild(knowledge);
+		// Эта штука должна сохранять файл. И бросать ошибку что не сохранила, если была ошибка
+		saveXmlFile();
+	}
+	
+	/**
 	 * Сохраняет полностью весь файл.
 	 * 
-	 * @throws TransformerFactoryConfigurationError
 	 * @throws ExceptionNotPersisted
 	 */
-	private void saveXmlFile() throws TransformerFactoryConfigurationError, ExceptionNotPersisted {
+	private void saveXmlFile() throws ExceptionNotPersisted {
 		DOMSource source = new DOMSource(storage);
 		TransformerFactory transformerFactory = TransformerFactory.newInstance();
 		try {

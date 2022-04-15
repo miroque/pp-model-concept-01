@@ -30,7 +30,6 @@ public class ServiceKnowledgeXml implements ServiceKnowledge {
 
 	@Override
 	public void set(Knowledge parent, Knowledge item) throws ExceptionNotPersisted {
-		// TODO Auto-generated method stub
-		
+		dao.createOrUpdate(parent, item);
 	}
 }
