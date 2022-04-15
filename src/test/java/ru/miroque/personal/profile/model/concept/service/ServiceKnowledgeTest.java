@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import ru.miroque.personal.profile.model.concept.dao.DaoKnowledgeXml;
+import ru.miroque.personal.profile.model.concept.entity.Knowledge;
+import ru.miroque.personal.profile.model.concept.exception.ExceptionNotPersisted;
 
 import javax.xml.xpath.XPathExpressionException;
 
@@ -17,7 +19,7 @@ class ServiceKnowledgeTest {
 
 	@BeforeEach
 	void init() throws Exception {
-		service = new ServiceKnowledgeXml(new DaoKnowledgeXml(new File("src/test/resources/pp-miroque.xml")));
+		service = new ServiceKnowledgeXml(new DaoKnowledgeXml(new File("src/test/resources/pp-simple-data.xml")));
 	}
 
 
@@ -30,11 +32,47 @@ class ServiceKnowledgeTest {
 	 * - несколько совпадений
 	 * И каждый этот случай надо будет протестировать и описать....
 	 */
+	@Disabled
 	@Test
 	void testGetKnowledge() throws XPathExpressionException {
-//		service.findByName("java programmer");
-		service.findByName("data engineer");
+		service.findByName("java programmer");
+//		service.findByName("data engineer");
 
+	}
+
+	/**
+	 * Проверка когда мы просто набрасываем знание, в персону.
+	 * т.е. в первичный уровень, без знания в какое "знание"
+	 * 
+	 * И опять же, подход, такой, что я не знаю есть это знание или его нету в Хранилище.
+	 * Я просто его кладу в хранилище, а магия путь будет там где-то.
+	 * @throws ExceptionNotPersisted 
+	 */
+	@Test
+	void testCreateKnowledgeInPerson() throws ExceptionNotPersisted{
+		Knowledge item = new Knowledge(1l, "Test 0");
+		service.set(item);
+		
+		service.set(new Knowledge(1l, "Test 1"));
+		service.set(new Knowledge(1l, "Test 2"));
+		service.set(new Knowledge(1l, "Test 3"));
+		service.set(new Knowledge(1l, "Test 4"));
+		
+	}
+	
+	/**
+	 *  А тут проверяем, когда мы знаем в какое "знание" положить "новое" "знание"
+	 * 
+	 *  Подход, такой же, у меня есть 2 знания, и одно из них является родителем для второго.
+	 *  И так же ложим в Хранилище, и там уже магия, было не было, оно там должно сохраниться или обновиться.
+	 * @throws ExceptionNotPersisted 
+	 */
+	@Disabled
+	@Test
+	void testCreateKnowledgeInKnowlage() throws ExceptionNotPersisted{
+		Knowledge parent = new Knowledge(0l, "Parent Test");
+		Knowledge item = new Knowledge(1l, "Child Test");
+		service.set(parent, item);
 	}
 
 	@Disabled

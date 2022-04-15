@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<personal-profile
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="personal-profile.xsd">
+	<identity>
+		<person>
+			<fio>Pan Aleks Vlad</fio>
+			<birth-date>1982-03-14</birth-date>
+		</person>
+		<account>
+			<login>miroque</login>
+		</account>
+	</identity>
+	<data>
+		<knowledge expectation="30" level="0"
+			recalculated="2020-12-02T12:00:00.123Z">
+			<name>data engineer</name>
+			<knowledge expectation="10" level="0"
+				recalculated="2020-12-02T12:00:00.123Z">
+				<name>apache spark</name>
+			</knowledge>
+			<knowledge expectation="20" level="0"
+				recalculated="2020-12-02T12:00:00.123Z">
+				<name>apache hive</name>
+			</knowledge>
+		</knowledge>
+		<knowledge expectation="30" level="75"
+			recalculated="2022-03-19T12:00:00.123Z">
+			<name>java programmer</name>
+			<check class="NA" started="2022-03-19T12:00:00.123Z">
+				<name>с сайта с тестами прохожу тест</name>
+				<question asked="2022-03-19T12:00:00.123Z">
+					<name>Что такое класс?</name>
+					<answer given="2022-03-19T12:00:00.123Z" valid="true">Это контакт
+						описания свойств и поведения
+						всех объектов обладающих этими
+						свойствами.</answer>
+				</question>
+			</check>
+			<check class="verified center"
+				started="2022-03-19T12:00:00.123Z">
+				<name>Официальный сайт</name>
+				<question asked="2022-03-19T12:00:00.123Z">
+					<name>Что такое класс?</name>
+					<answer given="2022-03-19T12:00:00.123Z" valid="true">Это контакт
+						описания свойств и поведения
+						всех объектов обладающих этими
+						свойствами.</answer>
+				</question>
+			</check>
+		</knowledge>
+		<knowledge expectation="30" level="75"
+			recalculated="2022-03-19T12:00:00.123Z">
+			<name>математика</name>
+			<check class="экзамен на неделе"
+				started="2022-03-19T12:00:00.123Z">
+				<name>задачи в классе</name>
+				<question asked="2022-03-19T12:00:00.123Z">
+					<name>сколько будет 4+4?</name>
+					<answer given="2022-03-19T12:00:00.123Z" valid="true">8</answer>
+				</question>
+				<question asked="2022-03-19T12:00:00.123Z">
+					<name>сколько будет 5+4?</name>
+					<answer given="2022-03-19T12:00:00.123Z" valid="false">20</answer>
+				</question>
+			</check>
+			<check class="verified center"
+				started="2022-03-19T12:00:00.123Z">
+				<name>Официальный сайт</name>
+				<question asked="2022-03-19T12:00:00.123Z">
+					<name>Что такое класс?</name>
+					<answer given="2022-03-19T12:00:00.123Z" valid="true">Это контакт
+						описания свойств и поведения
+						всех объектов обладающих этими
+						свойствами.</answer>
+				</question>
+			</check>
+		</knowledge>
+		<knowledge>
+			<name>Test 0</name>
+		</knowledge>
+		<knowledge>
+			<name>Test 1</name>
+		</knowledge>
+		<knowledge>
+			<name>Test 2</name>
+		</knowledge>
+		<knowledge>
+			<name>Test 3</name>
+		</knowledge>
+		<knowledge>
+			<name>Test 4</name>
+		</knowledge>
+	</data>
+</personal-profile>
