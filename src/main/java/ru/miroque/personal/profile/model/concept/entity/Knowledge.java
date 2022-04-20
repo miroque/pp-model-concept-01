@@ -4,6 +4,10 @@ package ru.miroque.personal.profile.model.concept.entity;
 import java.util.Objects;
 
 public class Knowledge {
+    /**
+     * Ага, даже лог у меня тут стоит.
+     * И надо будет заморачиваться над генерацией уникального, значения.
+     */
     private Long id;
     private String name;
 

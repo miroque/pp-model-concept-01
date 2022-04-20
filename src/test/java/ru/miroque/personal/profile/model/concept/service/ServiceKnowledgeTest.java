@@ -50,9 +50,7 @@ class ServiceKnowledgeTest {
 	 */
 	@Test
 	void testCreateKnowledgeInPerson() throws ExceptionNotPersisted {
-		Knowledge item = new Knowledge(1l, "Test 0");
-		service.set(item);
-
+		service.set(new Knowledge(1l, "Test 0"));
 		service.set(new Knowledge(2l, "Test 1"));
 		service.set(new Knowledge(3l, "Test 2"));
 		service.set(new Knowledge(4l, "Test 3"));

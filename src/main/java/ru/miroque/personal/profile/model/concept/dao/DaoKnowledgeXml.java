@@ -1,10 +1,12 @@
 package ru.miroque.personal.profile.model.concept.dao;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.util.Collection;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+import ru.miroque.personal.profile.model.concept.entity.Knowledge;
+import ru.miroque.personal.profile.model.concept.exception.ExceptionBadWorkWithXml;
+import ru.miroque.personal.profile.model.concept.exception.ExceptionNotPersisted;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -13,22 +15,17 @@ import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-
-import ru.miroque.personal.profile.model.concept.entity.Knowledge;
-import ru.miroque.personal.profile.model.concept.exception.ExceptionBadWorkWithXml;
-import ru.miroque.personal.profile.model.concept.exception.ExceptionNotPersisted;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.util.Collection;
 
 public class DaoKnowledgeXml implements DaoKnowledge {
 	private Document storage;
@@ -96,30 +93,40 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 	 */
 	@Override
 	public void createOrUpdate(Knowledge item) throws ExceptionNotPersisted {
-		// boolean isExists = isItemExistsInStorage(storage, item);
-		// Давай пока без поиска, чисто, новый узел.
-		// В тег ДАТА
-		Element knowledge = storage.createElement("knowledge");
-		knowledge.setAttribute("id", item.getId().toString());
+		try {
+			XPath xPath = XPathFactory.newInstance().newXPath();
+//		NodeList nodes = (NodeList)xPath.evaluate("/personal-profile/data/ancestor-or-self::knowlage/name/", storage, XPathConstants.NODESET);
+			NodeList nodes = (NodeList) xPath.evaluate("//*[text()='" + item.getName() + "']", data, XPathConstants.NODESET);
+			if (nodes.getLength() == 0) {
+				Element knowledge = storage.createElement("knowledge");
+				knowledge.setAttribute("id", item.getId().toString());
 
-		Element name = storage.createElement("name");
-		name.appendChild(storage.createTextNode(item.getName()));
-		
-		knowledge.appendChild(name);
-		
-		data.appendChild(knowledge);
-		// Эта штука должна сохранять файл. И бросать ошибку что не сохранила, если была ошибка
-		saveXmlFile();
+				Element name = storage.createElement("name");
+				name.appendChild(storage.createTextNode(item.getName()));
+
+				knowledge.appendChild(name);
+
+				data.appendChild(knowledge);
+				// Эта штука должна сохранять файл. И бросать ошибку, что не сохранила, если была ошибка
+				saveXmlFile();
+
+			} else if (nodes.getLength() == 1) {
+				throw new ExceptionNotPersisted("Уже есть такой элемент в \"Хранилище\"");
+			} else {
+				throw new ExceptionNotPersisted("Нашлось несколько элемент в \"Хранилище\"");
+			}
+		} catch (XPathExpressionException e) {
+			throw new ExceptionNotPersisted(e.getMessage());
+		}
 	}
 
 	/**
-	 * А тут мне надо найти Один Конкретынй узел, и его обновить. А если его нету,
-	 * то создать в корневом элементе.
+	 * Сохраняем Знание, в указанный "Родитель"
 	 */
 	@Override
 	public void createOrUpdate(Knowledge parent, Knowledge item) throws ExceptionNotPersisted {
 		// А тут надо найти родительский узел, он должен быть только один.
-		
+
 //		 boolean isExists = isItemExistsInStorage(storage, item);
 		// Давай пока без поиска, чисто, новый узел.
 		// В тег ДАТА
@@ -128,17 +135,17 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 
 		Element name = storage.createElement("name");
 		name.appendChild(storage.createTextNode(item.getName()));
-		
+
 		knowledge.appendChild(name);
-		
+
 		data.appendChild(knowledge);
 		// Эта штука должна сохранять файл. И бросать ошибку что не сохранила, если была ошибка
 		saveXmlFile();
 	}
-	
+
 	/**
 	 * Сохраняет полностью весь файл.
-	 * 
+	 *
 	 * @throws ExceptionNotPersisted
 	 */
 	private void saveXmlFile() throws ExceptionNotPersisted {
@@ -151,11 +158,6 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 		} catch (TransformerException e) {
 			throw new ExceptionNotPersisted(e.getMessage());
 		}
-	}
-
-	private boolean isItemExistsInStorage(Document document, Knowledge item) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 //	String usr = document.getElementsByTagName("user").item(0).getTextContent();
