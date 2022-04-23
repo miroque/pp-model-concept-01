@@ -8,10 +8,10 @@ import java.util.Collection;
 
 public interface ServiceKnowledge {
 
-	Collection<Knowledge>  findByName(String name) throws XPathExpressionException;
+	Collection<Knowledge> findByName(String name) throws XPathExpressionException;
 
 	void set(Knowledge item) throws ExceptionNotPersisted;
 
-	void set(Knowledge parent, Knowledge item)throws ExceptionNotPersisted;
+	void set(Knowledge parent, Knowledge item) throws ExceptionNotPersisted;
 
 }

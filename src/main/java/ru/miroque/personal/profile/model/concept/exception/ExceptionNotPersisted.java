@@ -8,7 +8,7 @@ public class ExceptionNotPersisted extends Exception {
 	}
 
 	public ExceptionNotPersisted(String message, Throwable cause, boolean enableSuppression,
-			boolean writableStackTrace) {
+								 boolean writableStackTrace) {
 		super(message, cause, enableSuppression, writableStackTrace);
 	}
 
@@ -24,5 +24,5 @@ public class ExceptionNotPersisted extends Exception {
 		super(cause);
 	}
 
-	
+
 }

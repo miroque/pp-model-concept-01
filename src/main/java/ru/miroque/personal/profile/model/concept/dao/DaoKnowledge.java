@@ -8,8 +8,10 @@ import java.util.Collection;
 
 public interface DaoKnowledge {
 
-    Collection<Knowledge> findByName(String name) throws XPathExpressionException;
+	Collection<Knowledge> findByName(String name) throws XPathExpressionException;
+
 	void createOrUpdate(Knowledge item) throws ExceptionNotPersisted;
+
 	void createOrUpdate(Knowledge parent, Knowledge item) throws ExceptionNotPersisted;
 
 }

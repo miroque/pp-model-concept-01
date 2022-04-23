@@ -57,6 +57,13 @@ class ServiceKnowledgeTest {
 		service.set(new Knowledge(5l, "Test 4"));
 
 	}
+	@Test
+	void testCreateKnowledgeInKnowledge() throws ExceptionNotPersisted {
+//		var root = new Knowledge(999l, "Test nine nine nine");
+		var root = new Knowledge(3l, "Test nine nine nine");
+//		service.set(root);
+		service.set(root, new Knowledge(28l, "foo-bar **"));
+	}
 
 	@Test
 	void testCreateKnowledgeInPersonError() {
