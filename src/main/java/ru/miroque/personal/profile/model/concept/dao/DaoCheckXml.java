@@ -24,11 +24,14 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class DaoCheckXml implements DaoCheck {
 	private final Document storage;
 	private final File storagePath;
 	private final Element data;
+	private final ResourceBundle bundle;
 
 	public DaoCheckXml(File file) throws ExceptionBadWorkWithXml, SAXException, IOException, ParserConfigurationException {
 		storagePath = file;
@@ -37,6 +40,7 @@ public class DaoCheckXml implements DaoCheck {
 		documentBuilder = documentBuilderFactory.newDocumentBuilder();
 		storage = documentBuilder.parse(storagePath);
 		data = extractDataNode(storage);
+		bundle = ResourceBundle.getBundle("messages", new Locale("ru_ru"));
 	}
 
 
@@ -49,7 +53,7 @@ public class DaoCheckXml implements DaoCheck {
 				generateNewCheckNode(item, data);
 				saveXmlFile();
 			} else {
-				throw new ExceptionNotPersisted("Элемент не найден. Обновлять нечего. Необходимо сначала создать знание.");
+				throw new ExceptionNotPersisted(String.format(bundle.getString("error.check.not-found"), item.getId()));
 			}
 		} catch (XPathExpressionException e) {
 			throw new ExceptionNotPersisted(e.getMessage());
@@ -68,7 +72,7 @@ public class DaoCheckXml implements DaoCheck {
 			Node node = (Node) xPath.evaluate("/personal-profile/data/descendant-or-self::*/ check[@id=" + id + "]", data, XPathConstants.NODE);
 			return new Check(id, node.getFirstChild().getNextSibling().getTextContent());
 		} catch (Exception e) {
-			throw new ExceptionBadWorkWithXml(e.getMessage());
+			throw new ExceptionBadWorkWithXml(String.format(bundle.getString("error.check.not-found"), id));
 		}
 	}
 
