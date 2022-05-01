@@ -8,7 +8,7 @@ import java.io.File;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+import   org.junit.jupiter.api.Test;
 
 import ru.miroque.personal.profile.model.concept.dao.DaoKnowledgeXml;
 import ru.miroque.personal.profile.model.concept.entity.Knowledge;
@@ -22,7 +22,8 @@ class ServiceKnowledgeTest {
 
 	@BeforeEach
 	void init() throws Exception {
-		service = new ServiceKnowledgeXml(new DaoKnowledgeXml(new File("src/test/resources/pp-simple-data.xml")));
+//		service = new ServiceKnowledgeXml(new DaoKnowledgeXml(new File("src/test/resources/pp-simple-data.xml")));
+		service = new ServiceKnowledgeXml(new DaoKnowledgeXml(new File("src/test/resources/empty.ppml")));
 	}
 
 	/**
@@ -60,9 +61,9 @@ class ServiceKnowledgeTest {
 	@Test
 	void testCreateKnowledgeInKnowledge() throws ExceptionNotPersisted {
 //		var root = new Knowledge(999l, "Test nine nine nine");
-		var root = new Knowledge(3l, "Test nine nine nine");
+		var root = new Knowledge(6l, "Test nine nine nine");
 //		service.set(root);
-		service.set(root, new Knowledge(28l, "foo-bar **"));
+		service.set(root, new Knowledge(7l, "Некое знание которое я забыл, но которое необходимо \uD83C\uDF89 \uD83C\uDFC0"));
 	}
 
 	@Test

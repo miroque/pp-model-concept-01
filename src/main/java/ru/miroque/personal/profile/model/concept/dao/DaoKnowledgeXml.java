@@ -28,6 +28,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
+import java.util.Collections;
 
 public class DaoKnowledgeXml implements DaoKnowledge {
 	private final Document storage;
@@ -68,15 +69,19 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 
 	/**
 	 * Поиск элемента по Имени (на самом деле по текстовому значению). Три
-	 * результата поиска может получиться: 1. ни чего не нашло 2. нашло одно
-	 * совпадение 3. нашло больше одного совпадения
+	 * результата поиска может получиться:
+	 * <ol>
+	 *     <li>ни чего не нашло</li>
+	 *     <li>нашло одно совпадение</li>
+	 *     <li>нашло больше одного совпадения</li>
+	 * </ol>
 	 */
 	@Override
 	public Collection<Knowledge> findByName(String name) throws XPathExpressionException {
 		// Evaluate XPath against Document itself
 		XPath xPath = XPathFactory.newInstance().newXPath();
 		NodeList nodes = (NodeList) xPath.evaluate("//*[text()='" + name + "']", data, XPathConstants.NODESET);
-		for (int i = 0; i < nodes.getLength(); ++i) {
+/*		for (int i = 0; i < nodes.getLength(); ++i) {
 			Element e = (Element) nodes.item(i);
 			System.out.println("e = " + e);
 			System.out.println("e.getTagName() = " + e.getTagName());
@@ -84,8 +89,9 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 			System.out.println("e.getParentNode().getTextContent() = " + e.getParentNode().getTextContent());
 			System.out.println("e.getParentNode().getNodeName() = " + e.getParentNode().getNodeName());
 
-		}
-		return null;
+		}*/
+		// TODO: Здесь необходимо сделать конрвертатор из Нодов В Знания
+		return Collections.EMPTY_LIST;
 	}
 
 	/**

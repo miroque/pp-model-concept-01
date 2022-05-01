@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><personal-profile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="personal-profile.xsd">
+    <identity>
+        <person>
+            <fio>Pan Aleks Vlad</fio>
+            <birth-date>1982-03-14</birth-date>
+        </person>
+        <account>
+            <login>miroque</login>
+        </account>
+    </identity>
+    <data>
+        <knowledge id="1">
+            <name>Test 0</name>
+            <check id="1" class="NA" started="2022-03-19T12:00:00.123Z">
+                <name>с сайта с тестами прохожу тест</name>
+                <question asked="2022-03-19T12:00:00.123Z">
+                    <name>Что такое класс?</name>
+                    <answer given="2022-03-19T12:00:00.123Z" valid="true">Это контакт
+                        описания свойств и поведения
+                        всех объектов обладающих этими
+                        свойствами.
+                    </answer>
+                </question>
+            </check>
+            <check id="1" class="NA" started="2022-03-19T12:00:00.123Z">
+                <name>ну вы и даете</name>
+                <question asked="2022-03-19T12:00:00.123Z">
+                    <name>Что такое класс?</name>
+                    <answer given="2022-03-19T12:00:00.123Z" valid="true">Это контакт
+                        описания свойств и поведения
+                        всех объектов обладающих этими
+                        свойствами.
+                    </answer>
+                </question>
+            </check>
+            <knowledge id="6">
+                <name>foo-bar **</name>
+            <knowledge id="7"><name>Некое знание которое я забыл, но которое необходимо &#127881; &#127936;</name></knowledge></knowledge>
+        </knowledge>
+        <knowledge id="2">
+            <name>Test 1</name>
+        </knowledge>
+        <knowledge id="3">
+            <name>Test 2</name>
+        </knowledge>
+        <knowledge id="4">
+            <name>Test 3</name>
+        </knowledge>
+        <knowledge id="5">
+            <name>Test 4</name>
+        </knowledge>
+    </data>
+</personal-profile>
