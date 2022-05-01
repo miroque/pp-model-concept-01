@@ -39,7 +39,7 @@ class ServiceCheckTest {
 	 * но тут я уже тестировал, получилось, что если узлов с однинаковым айди, много.
 	 * то по режиму выбора Узла, он достает самый первый который нашел.
 	 */
-//	@Disabled
+	@Disabled
 	@Test
 	void testGetCheckByIdWithError() throws ExceptionBadWorkWithXml {
 		serviceCorrupted.findById(3L);
@@ -63,7 +63,7 @@ class ServiceCheckTest {
 	 */
 	@Test
 	void testUpdateCheck() throws ExceptionNotPersisted {
-		service.set(new Check(1L, "test check"));
+		service.set(new Check(8L, "Я забыл что тут было, но однако хочется проверить."));
 	}
 
 	@Disabled

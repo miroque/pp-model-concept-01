@@ -44,16 +44,21 @@ public class DaoCheckXml implements DaoCheck {
 	}
 
 
+	/**
+	 * @param item Проверка. Обновляем существующий.
+	 *             Создавать не получится. Отдельно от Знания смысла не имеет.
+	 * @throws ExceptionNotPersisted
+	 */
 	@Override
 	public void createOrUpdate(Check item) throws ExceptionNotPersisted {
 		try {
 			XPath xPath = XPathFactory.newInstance().newXPath();
 			Node node = (Node) xPath.evaluate("/personal-profile/data/descendant-or-self::*/ check[@id=" + item.getId() + "]", data, XPathConstants.NODE);
 			if (node != null) {
-				generateNewCheckNode(item, data);
+				node.getFirstChild().getNextSibling().setTextContent(item.getName());
 				saveXmlFile();
 			} else {
-				throw new ExceptionNotPersisted(String.format(bundle.getString("error.check.not-found"), item.getId()));
+				throw new ExceptionNotPersisted(String.format(bundle.getString("error.check.not-found.persist"), item.getId()));
 			}
 		} catch (XPathExpressionException e) {
 			throw new ExceptionNotPersisted(e.getMessage());
