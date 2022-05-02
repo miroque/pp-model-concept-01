@@ -53,7 +53,7 @@ public class DaoCheckXml implements DaoCheck {
 	public void createOrUpdate(Check item) throws ExceptionNotPersisted {
 		try {
 			XPath xPath = XPathFactory.newInstance().newXPath();
-			Node node = (Node) xPath.evaluate("/personal-profile/data/descendant-or-self::*/ check[@id=" + item.getId() + "]", data, XPathConstants.NODE);
+			Node node = (Node) xPath.evaluate("/personal-profile/data/descendant-or-self::*/check[@id=" + item.getId() + "]", data, XPathConstants.NODE);
 			if (node != null) {
 				node.getFirstChild().getNextSibling().setTextContent(item.getName());
 				saveXmlFile();
@@ -67,7 +67,26 @@ public class DaoCheckXml implements DaoCheck {
 
 	@Override
 	public void createOrUpdate(Knowledge box, Check item) throws ExceptionNotPersisted {
-
+		try {
+			XPath boxPath = XPathFactory.newInstance().newXPath();
+			Node boxNode = (Node) boxPath.evaluate("/personal-profile/data/descendant-or-self::*/knowledge[@id=" + box.getId() + "]", data, XPathConstants.NODE);
+			if (boxNode != null) {
+				XPath itemPath = XPathFactory.newInstance().newXPath();
+				Node itemNode = (Node) itemPath.evaluate("self::*/check[@id=" + item.getId() + "]", boxNode, XPathConstants.NODE);
+				if (itemNode != null) {
+					// тут надо обновить Проверку
+					itemNode.getFirstChild().getNextSibling().setTextContent(item.getName());
+				} else {
+					// а тту надо создать эту Проверку
+//					generateNewKnoledgeNode(item, boxNode);
+				}
+				saveXmlFile();
+			} else if (boxNode == null) {
+				throw new ExceptionNotPersisted("Не нашлось такого элемента в \"Хранилище\"");
+			}
+		} catch (XPathExpressionException e) {
+			throw new ExceptionNotPersisted(e.getMessage());
+		}
 	}
 
 	@Override

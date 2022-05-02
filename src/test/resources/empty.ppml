@@ -12,7 +12,7 @@
         <knowledge id="1">
             <name>Test 0</name>
             <check class="NA" id="1" started="2022-03-19T12:00:00.123Z">
-                <name>Я забыл что тут было, но однако хочется проверить.</name>
+                <name>Проверка--обновление</name>
                 <question asked="2022-03-19T12:00:00.123Z">
                     <name>Что такое класс?</name>
                     <answer given="2022-03-19T12:00:00.123Z" valid="true">Это контакт

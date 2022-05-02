@@ -51,13 +51,23 @@ class ServiceCheckTest {
 	}
 
 	/**
-	 * Проверка создания/обновления Проверки в Знании
+	 * Проверка обновления Проверки в Знании
 	 *
 	 * @throws ExceptionNotPersisted
 	 */
 	@Test
-	void testCreateCheckinKnowledge() throws ExceptionNotPersisted {
-		service.set(new Knowledge(1L, null), new Check(1L, "тестовая проверка"));
+	void testUpdateCheckInKnowledge() throws ExceptionNotPersisted {
+		service.set(new Knowledge(1L, null), new Check(1L, "Проверка--обновление"));
+	}
+
+	/**
+	 * Проверка создания Проверки в Знании
+	 *
+	 * @throws ExceptionNotPersisted
+	 */
+	@Test
+	void testCreateCheckInKnowledge() throws ExceptionNotPersisted {
+		service.set(new Knowledge(1L, null), new Check(800_000_000L, "проверка--создание"));
 	}
 
 	/**
