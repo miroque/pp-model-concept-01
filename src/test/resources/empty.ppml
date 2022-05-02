@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><personal-profile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="personal-profile.xsd">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<personal-profile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="personal-profile.xsd">
     <identity>
         <person>
             <fio>Pan Aleks Vlad</fio>
@@ -21,7 +22,8 @@
                         свойствами.
                     </answer>
                 </question>
-            </check>test check<check class="NA" id="2" started="2022-03-19T12:00:00.123Z">
+            </check>
+            <check class="NA" id="2" started="2022-03-19T12:00:00.123Z">
                 <name>ну вы и даете</name>
                 <question asked="2022-03-19T12:00:00.123Z">
                     <name>Что такое класс?</name>
@@ -34,7 +36,10 @@
             </check>
             <knowledge id="6">
                 <name>foo-bar **</name>
-            <knowledge id="7"><name>Некое знание которое я забыл, но которое необходимо &#127881; &#127936;</name></knowledge></knowledge>
+                <knowledge id="7">
+                    <name>Некое знание которое я забыл, но которое необходимо &#127881; &#127936;</name>
+                </knowledge>
+            </knowledge>
         </knowledge>
         <knowledge id="2">
             <name>Test 1</name>

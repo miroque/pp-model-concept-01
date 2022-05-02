@@ -78,7 +78,7 @@ public class DaoCheckXml implements DaoCheck {
 					itemNode.getFirstChild().getNextSibling().setTextContent(item.getName());
 				} else {
 					// а тту надо создать эту Проверку
-//					generateNewKnoledgeNode(item, boxNode);
+					generateNewCheckNode(item, boxNode);
 				}
 				saveXmlFile();
 			} else if (boxNode == null) {
