@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<personal-profile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="personal-profile.xsd">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><personal-profile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="personal-profile.xsd">
     <identity>
         <person>
             <fio>Pan Aleks Vlad</fio>
@@ -16,14 +15,11 @@
                 <name>Проверка--обновление</name>
                 <question asked="2022-03-19T12:00:00.123Z" id="1">
                     <name>Что такое класс?</name>
-                    <answer given="2022-03-19T12:00:00.123Z" valid="true">Это контакт
-                        описания свойств и поведения
-                        всех объектов обладающих этими
-                        свойствами.
-                    </answer>
+                    <answer given="2022-03-19T12:00:00.123Z" id="1" valid="true">Проверка--обновление</answer>
                 </question>
                 <question id="800000000">
-                    <name>проверка--создание</name>
+                    <name>проверка--создание 2</name>
+                    <answer id="800000000">проверка--создание 2 2</answer>
                 </question>
             </check>
             <check class="NA" id="2" started="2022-03-19T12:00:00.123Z">

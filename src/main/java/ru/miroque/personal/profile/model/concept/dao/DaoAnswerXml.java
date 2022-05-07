@@ -5,7 +5,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-import ru.miroque.personal.profile.model.concept.entity.Check;
+import ru.miroque.personal.profile.model.concept.entity.Answer;
 import ru.miroque.personal.profile.model.concept.entity.Question;
 import ru.miroque.personal.profile.model.concept.exception.ExceptionBadWorkWithXml;
 import ru.miroque.personal.profile.model.concept.exception.ExceptionNotPersisted;
@@ -27,13 +27,13 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public class DaoQuestionXml implements DaoQuestion {
+public class DaoAnswerXml implements DaoAnswer {
 	private final Document storage;
 	private final File storagePath;
 	private final Element data;
 	private final ResourceBundle bundle;
 
-	public DaoQuestionXml(File file) throws ExceptionBadWorkWithXml, SAXException, IOException, ParserConfigurationException {
+	public DaoAnswerXml(File file) throws ExceptionBadWorkWithXml, SAXException, IOException, ParserConfigurationException {
 		storagePath = file;
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder documentBuilder;
@@ -50,15 +50,15 @@ public class DaoQuestionXml implements DaoQuestion {
 	 * @throws ExceptionNotPersisted
 	 */
 	@Override
-	public void createOrUpdate(Question item) throws ExceptionNotPersisted {
+	public void createOrUpdate(Answer item) throws ExceptionNotPersisted {
 		try {
 			XPath xPath = XPathFactory.newInstance().newXPath();
-			Node node = (Node) xPath.evaluate("/personal-profile/data/descendant-or-self::*/question[@id=" + item.getId() + "]", data, XPathConstants.NODE);
+			Node node = (Node) xPath.evaluate("/personal-profile/data/descendant-or-self::*/answer[@id=" + item.getId() + "]", data, XPathConstants.NODE);
 			if (node != null) {
-				node.getFirstChild().getNextSibling().setTextContent(item.getName());
+				node.getFirstChild().setTextContent(item.getName());
 				saveXmlFile();
 			} else {
-				throw new ExceptionNotPersisted(String.format(bundle.getString("error.question.not-found.persist"), item.getId()));
+				throw new ExceptionNotPersisted(String.format(bundle.getString("error.answer.not-found.persist"), item.getId()));
 			}
 		} catch (XPathExpressionException e) {
 			//TODO: replace i18n
@@ -67,15 +67,15 @@ public class DaoQuestionXml implements DaoQuestion {
 	}
 
 	@Override
-	public void createOrUpdate(Check box, Question item) throws ExceptionNotPersisted {
+	public void createOrUpdate(Question box, Answer item) throws ExceptionNotPersisted {
 		try {
 			XPath boxPath = XPathFactory.newInstance().newXPath();
-			Node boxNode = (Node) boxPath.evaluate("/personal-profile/data/descendant-or-self::*/check[@id=" + box.getId() + "]", data, XPathConstants.NODE);
+			Node boxNode = (Node) boxPath.evaluate("/personal-profile/data/descendant-or-self::*/question[@id=" + box.getId() + "]", data, XPathConstants.NODE);
 			if (boxNode != null) {
 				XPath itemPath = XPathFactory.newInstance().newXPath();
-				Node itemNode = (Node) itemPath.evaluate("self::*/question[@id=" + item.getId() + "]", boxNode, XPathConstants.NODE);
+				Node itemNode = (Node) itemPath.evaluate("self::*/answer[@id=" + item.getId() + "]", boxNode, XPathConstants.NODE);
 				if (itemNode != null) {
-					itemNode.getFirstChild().getNextSibling().setTextContent(item.getName());
+					itemNode.getFirstChild().setTextContent(item.getName());
 				} else {
 					generateNewItemNode(item, boxNode);
 				}
@@ -90,13 +90,13 @@ public class DaoQuestionXml implements DaoQuestion {
 	}
 
 	@Override
-	public Question findById(long id) throws ExceptionBadWorkWithXml {
+	public Answer findById(long id) throws ExceptionBadWorkWithXml {
 		XPath xPath = XPathFactory.newInstance().newXPath();
 		try {
-			Node node = (Node) xPath.evaluate("/personal-profile/data/descendant-or-self::*/question[@id=" + id + "]", data, XPathConstants.NODE);
-			return new Question(id, node.getFirstChild().getNextSibling().getTextContent());
+			Node node = (Node) xPath.evaluate("/personal-profile/data/descendant-or-self::*/answer[@id=" + id + "]", data, XPathConstants.NODE);
+			return new Answer(id, node.getFirstChild().getTextContent());
 		} catch (Exception e) {
-			throw new ExceptionBadWorkWithXml(String.format(bundle.getString("error.question.not-found"), id));
+			throw new ExceptionBadWorkWithXml(String.format(bundle.getString("error.answer.not-found"), id));
 		}
 	}
 
@@ -112,15 +112,10 @@ public class DaoQuestionXml implements DaoQuestion {
 		}
 	}
 
-	private void generateNewItemNode(Question item, Node parentNode) {
-		Element element = storage.createElement("question");
+	private void generateNewItemNode(Answer item, Node parentNode) {
+		Element element = storage.createElement("answer");
 		element.setAttribute("id", item.getId().toString());
-
-		Element name = storage.createElement("name");
-		name.appendChild(storage.createTextNode(item.getName()));
-
-		element.appendChild(name);
-
+		element.setTextContent(item.getName());
 		parentNode.appendChild(element);
 	}
 
