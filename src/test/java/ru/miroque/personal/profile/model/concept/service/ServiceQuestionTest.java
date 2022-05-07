@@ -28,13 +28,22 @@ class ServiceQuestionTest {
 	}
 
 	/**
-	 * Просто найти одно Знание, оно должно быть одно.
+	 * Просто найти один Вопрос, оно должно быть одно.
 	 */
 	@Disabled
 	@Test
-	void testGetCheckById() throws ExceptionBadWorkWithXml {
-		Question check = service.findById(2L);
-		System.out.println("check = " + check);
+	void testGetQuestionById() throws ExceptionBadWorkWithXml {
+		Question item = service.findById(2L);
+		System.out.println(item);
+	}
+
+	/**
+	 * Провека ОБНОВЛЕНИЯ конкретного Вопроса
+	 */
+	@Disabled
+	@Test
+	void testUpdateQuestion() throws ExceptionNotPersisted {
+		service.set(new Question(1L, "Я забыл что тут было, но однако хочется проверить."));
 	}
 
 	/**
@@ -53,12 +62,12 @@ class ServiceQuestionTest {
 	}
 
 	/**
-	 * Проверка обновления Проверки в Знании
+	 * Проверка обновления Вопроса в Проверке
 	 *
 	 * @throws ExceptionNotPersisted
 	 */
 	@Test
-	void testUpdateCheckInKnowledge() throws ExceptionNotPersisted {
+	void testUpdateQuestionInCheck() throws ExceptionNotPersisted {
 		service.set(new Check(1L, null), new Question(1L, "Проверка--обновление"));
 	}
 
@@ -68,18 +77,10 @@ class ServiceQuestionTest {
 	 * @throws ExceptionNotPersisted
 	 */
 	@Test
-	void testCreateCheckInKnowledge() throws ExceptionNotPersisted {
+	void testCreateQuestionInCheck() throws ExceptionNotPersisted {
 		service.set(new Check(1L, null), new Question(800_000_000L, "проверка--создание"));
 	}
 
-	/**
-	 * Провека ОБНОВЛЕНИЯ конкретной Проверки
-	 */
-	@Disabled
-	@Test
-	void testUpdateCheck() throws ExceptionNotPersisted {
-		service.set(new Question(8L, "Я забыл что тут было, но однако хочется проверить."));
-	}
 
 	@Disabled
 	@Test

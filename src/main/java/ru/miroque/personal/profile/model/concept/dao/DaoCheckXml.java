@@ -61,6 +61,7 @@ public class DaoCheckXml implements DaoCheck {
 				throw new ExceptionNotPersisted(String.format(bundle.getString("error.check.not-found.persist"), item.getId()));
 			}
 		} catch (XPathExpressionException e) {
+			//TODO: replace i18n
 			throw new ExceptionNotPersisted(e.getMessage());
 		}
 	}
@@ -82,9 +83,11 @@ public class DaoCheckXml implements DaoCheck {
 				}
 				saveXmlFile();
 			} else if (boxNode == null) {
+				//TODO: replace i18n
 				throw new ExceptionNotPersisted("Не нашлось такого элемента в \"Хранилище\"");
 			}
 		} catch (XPathExpressionException e) {
+			//TODO: replace i18n
 			throw new ExceptionNotPersisted(e.getMessage());
 		}
 	}
@@ -107,6 +110,7 @@ public class DaoCheckXml implements DaoCheck {
 		if (nodes.getLength() == 1) {
 			return (Element) nodes.item(0);
 		} else {
+			//TODO: replace i18n
 			throw new ExceptionBadWorkWithXml("тут больше элементов Дата, чем нужно");
 		}
 	}
@@ -136,6 +140,7 @@ public class DaoCheckXml implements DaoCheck {
 			StreamResult result = new StreamResult(storagePath);
 			transformer.transform(source, result);
 		} catch (TransformerException e) {
+			//TODO: replace i18n
 			throw new ExceptionNotPersisted(e.getMessage());
 		}
 	}

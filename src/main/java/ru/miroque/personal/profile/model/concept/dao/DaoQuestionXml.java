@@ -6,7 +6,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import ru.miroque.personal.profile.model.concept.entity.Check;
-import ru.miroque.personal.profile.model.concept.entity.Knowledge;
 import ru.miroque.personal.profile.model.concept.entity.Question;
 import ru.miroque.personal.profile.model.concept.exception.ExceptionBadWorkWithXml;
 import ru.miroque.personal.profile.model.concept.exception.ExceptionNotPersisted;
@@ -46,22 +45,23 @@ public class DaoQuestionXml implements DaoQuestion {
 
 
 	/**
-	 * @param item Проверка. Обновляем существующий.
-	 *             Создавать не получится. Отдельно от Знания смысла не имеет.
+	 * @param item Вопрос. Обновляем существующий.
+	 *             Создавать не получится. Отдельно от Проверки смысла не имеет.
 	 * @throws ExceptionNotPersisted
 	 */
 	@Override
 	public void createOrUpdate(Question item) throws ExceptionNotPersisted {
 		try {
 			XPath xPath = XPathFactory.newInstance().newXPath();
-			Node node = (Node) xPath.evaluate("/personal-profile/data/descendant-or-self::*/check[@id=" + item.getId() + "]", data, XPathConstants.NODE);
+			Node node = (Node) xPath.evaluate("/personal-profile/data/descendant-or-self::*/question[@id=" + item.getId() + "]", data, XPathConstants.NODE);
 			if (node != null) {
 				node.getFirstChild().getNextSibling().setTextContent(item.getName());
 				saveXmlFile();
 			} else {
-				throw new ExceptionNotPersisted(String.format(bundle.getString("error.check.not-found.persist"), item.getId()));
+				throw new ExceptionNotPersisted(String.format(bundle.getString("error.question.not-found.persist"), item.getId()));
 			}
 		} catch (XPathExpressionException e) {
+			//TODO: replace i18n
 			throw new ExceptionNotPersisted(e.getMessage());
 		}
 	}
@@ -70,22 +70,21 @@ public class DaoQuestionXml implements DaoQuestion {
 	public void createOrUpdate(Check box, Question item) throws ExceptionNotPersisted {
 		try {
 			XPath boxPath = XPathFactory.newInstance().newXPath();
-			Node boxNode = (Node) boxPath.evaluate("/personal-profile/data/descendant-or-self::*/knowledge[@id=" + box.getId() + "]", data, XPathConstants.NODE);
+			Node boxNode = (Node) boxPath.evaluate("/personal-profile/data/descendant-or-self::*/check[@id=" + box.getId() + "]", data, XPathConstants.NODE);
 			if (boxNode != null) {
 				XPath itemPath = XPathFactory.newInstance().newXPath();
-				Node itemNode = (Node) itemPath.evaluate("self::*/check[@id=" + item.getId() + "]", boxNode, XPathConstants.NODE);
+				Node itemNode = (Node) itemPath.evaluate("self::*/question[@id=" + item.getId() + "]", boxNode, XPathConstants.NODE);
 				if (itemNode != null) {
-					// тут надо обновить Проверку
 					itemNode.getFirstChild().getNextSibling().setTextContent(item.getName());
 				} else {
-					// а тту надо создать эту Проверку
-					generateNewCheckNode(item, boxNode);
+					generateNewItemNode(item, boxNode);
 				}
 				saveXmlFile();
 			} else if (boxNode == null) {
-				throw new ExceptionNotPersisted("Не нашлось такого элемента в \"Хранилище\"");
+				throw new ExceptionNotPersisted(String.format(bundle.getString("error.question.not-found.persist"), item.getId()));
 			}
 		} catch (XPathExpressionException e) {
+			//TODO: replace i18n
 			throw new ExceptionNotPersisted(e.getMessage());
 		}
 	}
@@ -94,10 +93,10 @@ public class DaoQuestionXml implements DaoQuestion {
 	public Question findById(long id) throws ExceptionBadWorkWithXml {
 		XPath xPath = XPathFactory.newInstance().newXPath();
 		try {
-			Node node = (Node) xPath.evaluate("/personal-profile/data/descendant-or-self::*/ check[@id=" + id + "]", data, XPathConstants.NODE);
+			Node node = (Node) xPath.evaluate("/personal-profile/data/descendant-or-self::*/question[@id=" + id + "]", data, XPathConstants.NODE);
 			return new Question(id, node.getFirstChild().getNextSibling().getTextContent());
 		} catch (Exception e) {
-			throw new ExceptionBadWorkWithXml(String.format(bundle.getString("error.check.not-found"), id));
+			throw new ExceptionBadWorkWithXml(String.format(bundle.getString("error.question.not-found"), id));
 		}
 	}
 
@@ -108,20 +107,21 @@ public class DaoQuestionXml implements DaoQuestion {
 		if (nodes.getLength() == 1) {
 			return (Element) nodes.item(0);
 		} else {
+			//TODO: replace i18n
 			throw new ExceptionBadWorkWithXml("тут больше элементов Дата, чем нужно");
 		}
 	}
 
-	private void generateNewCheckNode(Question item, Node parentNode) {
-		Element childKnowledge = storage.createElement("check");
-		childKnowledge.setAttribute("id", item.getId().toString());
+	private void generateNewItemNode(Question item, Node parentNode) {
+		Element element = storage.createElement("question");
+		element.setAttribute("id", item.getId().toString());
 
 		Element name = storage.createElement("name");
 		name.appendChild(storage.createTextNode(item.getName()));
 
-		childKnowledge.appendChild(name);
+		element.appendChild(name);
 
-		parentNode.appendChild(childKnowledge);
+		parentNode.appendChild(element);
 	}
 
 	/**
@@ -137,6 +137,7 @@ public class DaoQuestionXml implements DaoQuestion {
 			StreamResult result = new StreamResult(storagePath);
 			transformer.transform(source, result);
 		} catch (TransformerException e) {
+			//TODO: replace i18n
 			throw new ExceptionNotPersisted(e.getMessage());
 		}
 	}

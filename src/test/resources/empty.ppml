@@ -14,7 +14,7 @@
             <name>Test 0</name>
             <check class="NA" id="1" started="2022-03-19T12:00:00.123Z">
                 <name>Проверка--обновление</name>
-                <question asked="2022-03-19T12:00:00.123Z">
+                <question asked="2022-03-19T12:00:00.123Z" id="1">
                     <name>Что такое класс?</name>
                     <answer given="2022-03-19T12:00:00.123Z" valid="true">Это контакт
                         описания свойств и поведения
@@ -22,10 +22,13 @@
                         свойствами.
                     </answer>
                 </question>
+                <question id="800000000">
+                    <name>проверка--создание</name>
+                </question>
             </check>
             <check class="NA" id="2" started="2022-03-19T12:00:00.123Z">
                 <name>ну вы и даете</name>
-                <question asked="2022-03-19T12:00:00.123Z">
+                <question asked="2022-03-19T12:00:00.123Z" id="2">
                     <name>Что такое класс?</name>
                     <answer given="2022-03-19T12:00:00.123Z" valid="true">Это контакт
                         описания свойств и поведения

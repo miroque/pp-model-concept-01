@@ -63,6 +63,7 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 		if (nodes.getLength() == 1) {
 			return (Element) nodes.item(0);
 		} else {
+			//TODO: replace i18n
 			throw new ExceptionBadWorkWithXml("тут больше элементов Дата, чем нужно");
 		}
 	}
@@ -108,11 +109,14 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 				saveXmlFile();
 
 			} else if (nodes.getLength() == 1) {
+				//TODO: replace i18n
 				throw new ExceptionNotPersisted("Уже есть такой элемент в \"Хранилище\"");
 			} else {
+				//TODO: replace i18n
 				throw new ExceptionNotPersisted("Нашлось несколько элемент в \"Хранилище\"");
 			}
 		} catch (XPathExpressionException e) {
+			//TODO: replace i18n
 			throw new ExceptionNotPersisted(e.getMessage());
 		}
 	}
@@ -135,11 +139,15 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 				}
 				saveXmlFile();
 			} else if (parentNode == null) {
+				//TODO: replace i18n
 				throw new ExceptionNotPersisted("Не нашлось такого элемента в \"Хранилище\"");
 			} else {
+				//TODO: replace i18n
 				throw new ExceptionNotPersisted("Нашлось несколько элемент в \"Хранилище\"");
 			}
+			//TODO: replace i18n
 		} catch (XPathExpressionException e) {
+			//TODO: replace i18n
 			throw new ExceptionNotPersisted(e.getMessage());
 		}
 	}
@@ -169,6 +177,7 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 			StreamResult result = new StreamResult(storagePath);
 			transformer.transform(source, result);
 		} catch (TransformerException e) {
+			//TODO: replace i18n
 			throw new ExceptionNotPersisted(e.getMessage());
 		}
 	}
