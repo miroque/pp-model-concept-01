@@ -1,5 +1,6 @@
 package ru.miroque.personal.profile.model.concept.dao;
 
+import org.jboss.logging.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -35,6 +36,8 @@ import java.util.Collections;
 
 @ApplicationScoped
 public class DaoKnowledgeXml implements DaoKnowledge {
+	@Inject
+	Logger log;
 	private final Document storage;
 	private final File storagePath;
 	private final Element data;
@@ -112,6 +115,7 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 			if (nodes.getLength() == 0) {
 				generateNewKnoledgeNode(item, data);
 				saveXmlFile();
+				log.info("saved new Knowledge");
 
 			} else if (nodes.getLength() == 1) {
 				//TODO: replace i18n

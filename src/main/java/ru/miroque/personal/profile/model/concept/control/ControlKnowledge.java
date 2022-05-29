@@ -6,10 +6,7 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import ru.miroque.personal.profile.model.concept.entity.Knowledge;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -29,7 +26,7 @@ public interface ControlKnowledge {
 			description = "some resource gettig",
 			content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = Knowledge.class))
 	)
-	public Response item(@PathParam("id")Long id);
+	Response item(@PathParam("id") Long id);
 
 	@GET
 	@Path("/{name}")
@@ -44,5 +41,19 @@ public interface ControlKnowledge {
 			description = "some resource gettig",
 			content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = Knowledge.class))
 	)
-	public Response item(@PathParam("name")String value);
+	Response item(@PathParam("name") String value);
+
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Operation(
+			operationId = "set Knowledge",
+			summary = "Set New or Update Knowledge",
+			description = "Set New or Update Knowledge desc"
+	)
+	@APIResponse(
+			responseCode = "200",
+			description = "setting end return updated Knowledge",
+			content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = Knowledge.class))
+	)
+	Response set(Knowledge item);
 }

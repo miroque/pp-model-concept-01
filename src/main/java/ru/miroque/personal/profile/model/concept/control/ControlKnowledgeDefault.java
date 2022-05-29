@@ -2,6 +2,7 @@ package ru.miroque.personal.profile.model.concept.control;
 
 import org.jboss.logging.Logger;
 import ru.miroque.personal.profile.model.concept.entity.Knowledge;
+import ru.miroque.personal.profile.model.concept.exception.ExceptionNotPersisted;
 import ru.miroque.personal.profile.model.concept.service.ServiceKnowledge;
 
 import javax.inject.Inject;
@@ -23,10 +24,20 @@ public class ControlKnowledgeDefault implements ControlKnowledge {
 
 	@Override
 	public Response item(String value) {
-		Knowledge item;
 		try {
 			return Response.status(200).entity(service.findByName(value)).build();
 		} catch (XPathExpressionException e) {
+			log.error(e);
+			return Response.serverError().build();
+		}
+	}
+
+	@Override
+	public Response set(Knowledge item) {
+		try {
+			service.set(item);
+			return Response.ok("{\"status\":\"saved\"}").build();
+		} catch (ExceptionNotPersisted e) {
 			log.error(e);
 			return Response.serverError().build();
 		}
