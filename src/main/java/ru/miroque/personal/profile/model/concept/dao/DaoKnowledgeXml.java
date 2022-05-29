@@ -13,6 +13,7 @@ import ru.miroque.personal.profile.model.concept.exception.ExceptionNotPersisted
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -46,6 +47,9 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 	public DaoKnowledgeXml(File file) throws ExceptionBadWorkWithXml, SAXException, IOException, ParserConfigurationException {
 		storagePath = file;
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+		// or prohibit the use of all protocols by external entities:
+		documentBuilderFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+		documentBuilderFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
 		DocumentBuilder documentBuilder;
 		documentBuilder = documentBuilderFactory.newDocumentBuilder();
 		storage = documentBuilder.parse(storagePath);
@@ -54,6 +58,8 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 
 	public static void printDocument(Document doc, OutputStream out) throws IOException, TransformerException {
 		TransformerFactory tf = TransformerFactory.newInstance();
+		tf.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+		tf.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
 		Transformer transformer = tf.newTransformer();
 		transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
 		transformer.setOutputProperty(OutputKeys.METHOD, "xml");
@@ -147,9 +153,9 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 					generateNewKnoledgeNode(item, parentNode);
 				}
 				saveXmlFile();
-			} else if (parentNode == null) {
-				//TODO: replace i18n
-				throw new ExceptionNotPersisted("Не нашлось такого элемента в \"Хранилище\"");
+//			} else if (parentNode == null) {
+//				//TODO: replace i18n
+//				throw new ExceptionNotPersisted("Не нашлось такого элемента в \"Хранилище\"");
 			} else {
 				//TODO: replace i18n
 				throw new ExceptionNotPersisted("Нашлось несколько элемент в \"Хранилище\"");
@@ -180,9 +186,11 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 	 */
 	private void saveXmlFile() throws ExceptionNotPersisted {
 		DOMSource source = new DOMSource(storage);
-		TransformerFactory transformerFactory = TransformerFactory.newInstance();
+		TransformerFactory factory = TransformerFactory.newInstance();
+		factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+		factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
 		try {
-			Transformer transformer = transformerFactory.newTransformer();
+			Transformer transformer = factory.newTransformer();
 			StreamResult result = new StreamResult(storagePath);
 			transformer.transform(source, result);
 		} catch (TransformerException e) {
