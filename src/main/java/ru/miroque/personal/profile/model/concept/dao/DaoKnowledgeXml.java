@@ -12,7 +12,6 @@ import ru.miroque.personal.profile.model.concept.exception.ExceptionNotPersisted
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -106,7 +105,7 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 
 		}*/
 		// TODO: Здесь необходимо сделать конрвертатор из Нодов В Знания
-		return Collections.EMPTY_LIST;
+		return Collections.emptyList();
 	}
 
 	/**
@@ -115,11 +114,12 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 	 */
 	@Override
 	public void createOrUpdate(Knowledge item) throws ExceptionNotPersisted {
+		log.infof("Parent: %s, Item: %s", null, item);
 		try {
 			XPath xPath = XPathFactory.newInstance().newXPath();
 			NodeList nodes = (NodeList) xPath.evaluate("//*[text()='" + item.getName() + "']", data, XPathConstants.NODESET);
 			if (nodes.getLength() == 0) {
-				generateNewKnoledgeNode(item, data);
+				generateNewKnowledgeNode(item, data);
 				saveXmlFile();
 				log.info("saved new Knowledge");
 
@@ -141,16 +141,18 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 	 */
 	@Override
 	public void createOrUpdate(Knowledge parent, Knowledge item) throws ExceptionNotPersisted {
+		log.infof("Parent: {%s}, Item: {%s}", parent, item);
 		try {
 			XPath xPath = XPathFactory.newInstance().newXPath();
-			Node parentNode = (Node) xPath.evaluate("/personal-profile/data/descendant-or-self::*/ knowledge[@id=" + parent.getId() + "]", data, XPathConstants.NODE);
+			Node parentNode = (Node) xPath.evaluate("/personal-profile/data/descendant-or-self::*/knowledge[@id=" + parent.getId() + "]", data, XPathConstants.NODE);
 			if (parentNode != null) {
 				xPath = XPathFactory.newInstance().newXPath();
 				Node childNode = (Node) xPath.evaluate("self::*/knowledge[@id=" + item.getId() + "]", parentNode, XPathConstants.NODE);
 				if (childNode != null) {
-					childNode.getFirstChild().getNextSibling().setTextContent(item.getName());
+//					childNode.getFirstChild().getNextSibling().setTextContent(item.getName());
+					childNode.getFirstChild()/*.getNextSibling()*/.setTextContent(item.getName()); // <<<--- вот это рабочий вариант.. он обновляет значение тега НЕЙМ
 				} else {
-					generateNewKnoledgeNode(item, parentNode);
+					generateNewKnowledgeNode(item, parentNode);
 				}
 				saveXmlFile();
 //			} else if (parentNode == null) {
@@ -167,7 +169,7 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 		}
 	}
 
-	private void generateNewKnoledgeNode(Knowledge item, Node parentNode) {
+	private void generateNewKnowledgeNode(Knowledge item, Node parentNode) {
 		Element childKnowledge = storage.createElement("knowledge");
 		childKnowledge.setAttribute("id", item.getId().toString());
 
