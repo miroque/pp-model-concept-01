@@ -4,6 +4,7 @@ import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.jboss.resteasy.reactive.RestPath;
 import ru.miroque.personal.profile.model.concept.entity.Knowledge;
 
 import javax.ws.rs.*;
@@ -56,4 +57,19 @@ public interface ControlKnowledge {
 			content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = Knowledge.class))
 	)
 	Response set(Knowledge item);
+
+	@POST
+	@Path("/{id:\\d+}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Operation(
+			operationId = "set Knowledge with parent",
+			summary = "Set New or Update Knowledge with parent",
+			description = "Set New or Update Knowledge desc with parent"
+	)
+	@APIResponse(
+			responseCode = "200",
+			description = "setting end return updated Knowledge with parent",
+			content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = Knowledge.class))
+	)
+	Response set(@RestPath Long id , Knowledge item);
 }
