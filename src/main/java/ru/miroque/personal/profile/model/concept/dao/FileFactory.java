@@ -7,6 +7,7 @@ public class FileFactory {
 
 	@Produces
 	public File filePath(){
+		//TODO: если файла нет, то создать.
 		return new File("./payload/default.ppml");
 	}
 }
