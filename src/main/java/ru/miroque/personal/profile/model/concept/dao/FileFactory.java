@@ -8,9 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.LinkOption;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public class FileFactory {
 	@Inject
@@ -42,15 +40,11 @@ public class FileFactory {
 			log.warn("File does not exists!");
 			Path pathNewCreatedFile = null;
 			try {
-				String content = """
-								<?xml version="1.0" encoding="UTF-8" standalone="no"?>\n
-								<personal-profile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="personal-profile.xsd">
-									<identity>
-									</identity>
-									<data>
-									</data>
-								</personal-profile>
-								""";
+				String content = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>" +
+								"<personal-profile xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"personal-profile.xsd\">" +
+								" <identity> </identity>" +
+								" <data> </data>" +
+								"</personal-profile>";
 				pathNewCreatedFile = Files.write(pathDefaultCombinedFull, content.getBytes(StandardCharsets.UTF_8));
 				log.info("File CREATED!");
 			} catch (IOException e) {

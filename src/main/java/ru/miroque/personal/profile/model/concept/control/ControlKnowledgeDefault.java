@@ -2,13 +2,11 @@ package ru.miroque.personal.profile.model.concept.control;
 
 import org.jboss.logging.Logger;
 import ru.miroque.personal.profile.model.concept.entity.Knowledge;
-import ru.miroque.personal.profile.model.concept.exception.ExceptionBadWorkWithXml;
 import ru.miroque.personal.profile.model.concept.exception.ExceptionNotPersisted;
 import ru.miroque.personal.profile.model.concept.service.ServiceKnowledge;
 
 import javax.inject.Inject;
 import javax.ws.rs.core.Response;
-import javax.xml.xpath.XPathExpressionException;
 
 public class ControlKnowledgeDefault implements ControlKnowledge {
 	@Inject
