@@ -42,7 +42,7 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 	private final File storagePath;
 	private final Element data;
 
-
+	@Inject
 	public DaoKnowledgeXml(File file) throws ExceptionBadWorkWithXml, SAXException, IOException, ParserConfigurationException {
 		storagePath = file;
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -194,6 +194,10 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 		try {
 			Transformer transformer = factory.newTransformer();
 			StreamResult result = new StreamResult(storagePath);
+			transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+			transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+			transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
 			transformer.transform(source, result);
 		} catch (TransformerException e) {
 			//TODO: replace i18n

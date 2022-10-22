@@ -35,7 +35,7 @@ public class FileFactory {
 
 		if (Files.exists(pathDefaultCombinedFull)) {
 			log.infof("File exists, return one: %s", pathDefaultCombinedFull.toString());
-			return pathDefaultFile.toFile();
+			return pathDefaultCombinedFull.toFile();
 		} else {
 			log.warn("File does not exists!");
 			Path pathNewCreatedFile = null;
