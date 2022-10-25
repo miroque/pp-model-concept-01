@@ -34,8 +34,7 @@ public class ControlKnowledgeDefault implements ControlKnowledge {
 
 	@Override
 	public Response set(Knowledge item) {
-		log.info("Simple set of One Knowledge");
-		log.infof("<^> item: {%s}", item);
+		log.infov("Simple set of One Knowledge. <>> item::{0}::", item);
 		try {
 			service.set(item);
 			return Response.ok("{\"status\":\"saved\"}").build();
@@ -47,8 +46,9 @@ public class ControlKnowledgeDefault implements ControlKnowledge {
 
 	@Override
 	public Response set(Long id, Knowledge item) {
-		log.info("Set of One Knowledge AND PARENT");
-		log.infof("<^> id: {%s}, item: {%s}", id, item);
+		log.infov("Set of One Knowledge AND PARENT. <>> id::{0}::, item::{1}::", id, item);
+		log.debugv("Set of One Knowledge AND PARENT. <>> id::{0}::, item::{1}::", id, item);
+		log.tracev("Set of One Knowledge AND PARENT. <>> id::{0}::, item::{1}::", id, item);
 		try {
 			var dumb = new Knowledge(id, null);
 			service.set(dumb, item);
