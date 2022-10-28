@@ -14,4 +14,6 @@ public interface DaoKnowledge {
 
 	void createOrUpdate(Knowledge parent, Knowledge item) throws ExceptionNotPersisted;
 
+    Collection<Knowledge> findAllAtRoot();
+
 }

@@ -15,6 +15,21 @@ import javax.ws.rs.core.Response;
 public interface ControlKnowledge {
 
 	@GET
+	@Path("/")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Operation(
+			operationId = "getSome",
+			summary = "Get some Resource",
+			description = "getting some test resource"
+	)
+	@APIResponse(
+			responseCode = "200",
+			description = "some resource gettig",
+			content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = Knowledge.class))
+	)
+	Response items();
+
+	@GET
 	@Path("/{id:\\d+}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Operation(

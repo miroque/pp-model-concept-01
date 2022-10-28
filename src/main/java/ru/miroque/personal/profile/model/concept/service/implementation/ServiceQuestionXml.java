@@ -1,10 +1,11 @@
-package ru.miroque.personal.profile.model.concept.service;
+package ru.miroque.personal.profile.model.concept.service.implementation;
 
 import ru.miroque.personal.profile.model.concept.dao.DaoQuestion;
 import ru.miroque.personal.profile.model.concept.entity.Check;
 import ru.miroque.personal.profile.model.concept.entity.Question;
 import ru.miroque.personal.profile.model.concept.exception.ExceptionBadWorkWithXml;
 import ru.miroque.personal.profile.model.concept.exception.ExceptionNotPersisted;
+import ru.miroque.personal.profile.model.concept.service.ServiceQuestion;
 
 public class ServiceQuestionXml implements ServiceQuestion {
 	private final DaoQuestion dao;

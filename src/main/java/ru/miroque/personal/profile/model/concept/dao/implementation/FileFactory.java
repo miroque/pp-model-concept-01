@@ -1,4 +1,4 @@
-package ru.miroque.personal.profile.model.concept.dao;
+package ru.miroque.personal.profile.model.concept.dao.implementation;
 
 import org.jboss.logging.Logger;
 

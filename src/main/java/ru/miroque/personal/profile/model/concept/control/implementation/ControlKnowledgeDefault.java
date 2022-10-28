@@ -1,6 +1,8 @@
-package ru.miroque.personal.profile.model.concept.control;
+package ru.miroque.personal.profile.model.concept.control.implementation;
 
 import org.jboss.logging.Logger;
+
+import ru.miroque.personal.profile.model.concept.control.ControlKnowledge;
 import ru.miroque.personal.profile.model.concept.entity.Knowledge;
 import ru.miroque.personal.profile.model.concept.exception.ExceptionNotPersisted;
 import ru.miroque.personal.profile.model.concept.service.ServiceKnowledge;
@@ -15,6 +17,16 @@ public class ControlKnowledgeDefault implements ControlKnowledge {
 	@Inject
 	ServiceKnowledge service;
 
+	@Override
+	public Response items() {
+		try {
+			return Response.status(200).entity(service.findAllAtRoot()).build();
+		} catch (Exception e) {
+			log.error(e);
+//			throw new ExceptionBadWorkWithXml(String.format(bundle.getString("error.answer.not-found"), id));
+			return Response.serverError().build();
+		}
+	}
 	@Override
 	public Response item(Long id) {
 		//TODO: implement in SERVICE
@@ -46,9 +58,9 @@ public class ControlKnowledgeDefault implements ControlKnowledge {
 
 	@Override
 	public Response set(Long id, Knowledge item) {
-		log.infov("Set of One Knowledge AND PARENT. <>> id::{0}::, item::{1}::", id, item);
-		log.debugv("Set of One Knowledge AND PARENT. <>> id::{0}::, item::{1}::", id, item);
-		log.tracev("Set of One Knowledge AND PARENT. <>> id::{0}::, item::{1}::", id, item);
+		log.infov("Set of One Knowledge AND PARENT. <>> id::{0}::item::{1}::", id, item);
+		// log.debugv("Set of One Knowledge AND PARENT. <>> id::{0}::item::{1}::", id, item);
+		// log.tracev("Set of One Knowledge AND PARENT. <>> id::{0}::item::{1}::", id, item);
 		try {
 			var dumb = new Knowledge(id, null);
 			service.set(dumb, item);

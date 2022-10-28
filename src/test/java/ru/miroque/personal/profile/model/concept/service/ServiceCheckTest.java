@@ -3,12 +3,15 @@ package ru.miroque.personal.profile.model.concept.service;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import ru.miroque.personal.profile.model.concept.dao.DaoCheckXml;
-import ru.miroque.personal.profile.model.concept.dao.DaoKnowledgeXml;
+
+import ru.miroque.personal.profile.model.concept.dao.implementation.DaoCheckXml;
+import ru.miroque.personal.profile.model.concept.dao.implementation.DaoKnowledgeXml;
 import ru.miroque.personal.profile.model.concept.entity.Check;
 import ru.miroque.personal.profile.model.concept.entity.Knowledge;
 import ru.miroque.personal.profile.model.concept.exception.ExceptionBadWorkWithXml;
 import ru.miroque.personal.profile.model.concept.exception.ExceptionNotPersisted;
+import ru.miroque.personal.profile.model.concept.service.implementation.ServiceCheckXml;
+import ru.miroque.personal.profile.model.concept.service.implementation.ServiceKnowledgeXml;
 
 import java.io.File;
 

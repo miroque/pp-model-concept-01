@@ -1,8 +1,9 @@
-package ru.miroque.personal.profile.model.concept.service;
+package ru.miroque.personal.profile.model.concept.service.implementation;
 
 import ru.miroque.personal.profile.model.concept.dao.DaoKnowledge;
 import ru.miroque.personal.profile.model.concept.entity.Knowledge;
 import ru.miroque.personal.profile.model.concept.exception.ExceptionNotPersisted;
+import ru.miroque.personal.profile.model.concept.service.ServiceKnowledge;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -32,5 +33,10 @@ public class ServiceKnowledgeXml implements ServiceKnowledge {
 	@Override
 	public void set(Knowledge parent, Knowledge item) throws ExceptionNotPersisted {
 		dao.createOrUpdate(parent, item);
+	}
+
+	@Override
+	public Collection<Knowledge> findAllAtRoot() {
+		return dao.findAllAtRoot();
 	}
 }

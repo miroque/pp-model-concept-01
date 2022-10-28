@@ -14,4 +14,6 @@ public interface ServiceKnowledge {
 
 	void set(Knowledge parent, Knowledge item) throws ExceptionNotPersisted;
 
+    Collection<Knowledge> findAllAtRoot();
+
 }

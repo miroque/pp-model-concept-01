@@ -1,4 +1,4 @@
-package ru.miroque.personal.profile.model.concept.dao;
+package ru.miroque.personal.profile.model.concept.dao.implementation;
 
 import org.jboss.logging.Logger;
 import org.w3c.dom.Document;
@@ -6,6 +6,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
+import ru.miroque.personal.profile.model.concept.dao.DaoKnowledge;
 import ru.miroque.personal.profile.model.concept.entity.Knowledge;
 import ru.miroque.personal.profile.model.concept.exception.ExceptionBadWorkWithXml;
 import ru.miroque.personal.profile.model.concept.exception.ExceptionNotPersisted;
@@ -181,6 +183,49 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 		parentNode.appendChild(childKnowledge);
 	}
 
+	@Override
+	public Collection<Knowledge> findAllAtRoot() {
+		NodeList itemsRaw = storage.getElementsByTagName("knowledge");
+		
+		// Что-то так себе это вышло у меня
+		// for (int i = 0; i < itemsRaw.getLength(); i++) {
+		// 	Node itemRaw = itemsRaw.item(i);
+		// 	if(itemRaw.getNodeType()==Node.ELEMENT_NODE){
+		// 		Element e = (Element)itemRaw;
+		// 		NodeList names = e.getElementsByTagName("name");
+		// 		for (int j = 0; j < names.getLength(); j++) {
+		// 			Node name = names.item(j);
+		// 			if (name.getNodeType()==Node.ELEMENT_NODE) {
+		// 				Element n = (Element) name;
+		// 				log.infov("<>>sample-data-test>name-node-value::{0}", n.getTextContent());
+		// 			}
+		// 		}
+		// 	}
+		// }
+
+		// Evaluate XPath against Document itself
+		XPath xPath = XPathFactory.newInstance().newXPath();
+		// NodeList nodes = (NodeList) xPath.evaluate("//*[text()='" + name + "']", data, XPathConstants.NODESET);
+		NodeList items;
+		try {
+			items = (NodeList) xPath.evaluate("/personal-profile/data/descendant-or-self::*/knowledge", data, XPathConstants.NODESET);
+			for (int i = 0; i < items.getLength(); ++i) {
+				Element e = (Element) items.item(i);
+				log.infov("e::{0}", e);
+				log.infov("e.getTagName()::{0}", e.getTagName());
+				log.infov("e.getTextContent()::{0}", e.getTextContent());
+				// System.out.println("e.getParentNode().getTextContent() = " + e.getParentNode().getTextContent());
+				// System.out.println("e.getParentNode().getNodeName() = " + e.getParentNode().getNodeName());
+	
+			}
+		} catch (XPathExpressionException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		// TODO: Здесь необходимо сделать конрвертатор из Нодов В Знания
+		return Collections.emptyList();
+	}
+
 	/**
 	 * Сохраняет полностью весь файл.
 	 *
@@ -197,11 +242,12 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 			transformer.setOutputProperty(OutputKeys.METHOD, "xml");
 			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 			transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-			transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+			// transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
 			transformer.transform(source, result);
 		} catch (TransformerException e) {
 			//TODO: replace i18n
 			throw new ExceptionNotPersisted(e.getMessage());
 		}
 	}
+
 }
