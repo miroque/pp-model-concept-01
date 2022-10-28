@@ -13,6 +13,7 @@ import ru.miroque.personal.profile.model.concept.exception.ExceptionBadWorkWithX
 import ru.miroque.personal.profile.model.concept.exception.ExceptionNotPersisted;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Alternative;
 import javax.inject.Inject;
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
@@ -36,6 +37,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Collections;
 
+@Alternative
 @ApplicationScoped
 public class DaoKnowledgeXml implements DaoKnowledge {
 	@Inject

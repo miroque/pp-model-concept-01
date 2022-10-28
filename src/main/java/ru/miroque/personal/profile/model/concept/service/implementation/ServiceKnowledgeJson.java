@@ -1,24 +1,25 @@
 package ru.miroque.personal.profile.model.concept.service.implementation;
 
+import java.util.Collection;
+
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Default;
+import javax.inject.Inject;
+import javax.xml.xpath.XPathExpressionException;
+
 import ru.miroque.personal.profile.model.concept.dao.DaoKnowledge;
 import ru.miroque.personal.profile.model.concept.entity.Knowledge;
 import ru.miroque.personal.profile.model.concept.exception.ExceptionNotPersisted;
 import ru.miroque.personal.profile.model.concept.service.ServiceKnowledge;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Alternative;
-import javax.inject.Inject;
-import javax.xml.xpath.XPathExpressionException;
-import java.util.Collection;
-
-@Alternative
+@Default
 @ApplicationScoped
-public class ServiceKnowledgeXml implements ServiceKnowledge {
+public class ServiceKnowledgeJson implements ServiceKnowledge {
 
 	private final DaoKnowledge dao;
 
 	@Inject
-	public ServiceKnowledgeXml(DaoKnowledge dao) {
+	public ServiceKnowledgeJson(DaoKnowledge dao) {
 		this.dao = dao;
 	}
 

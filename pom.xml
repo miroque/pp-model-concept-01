@@ -17,6 +17,7 @@
 		<quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
 		<quarkus.platform.version>2.9.2.Final</quarkus.platform.version>
 		<surefire-plugin.version>3.0.0-M5</surefire-plugin.version>
+		<jackson.version>2.13.4</jackson.version>
 	</properties>
 
 	<dependencyManagement>
@@ -31,6 +32,8 @@
 		</dependencies>
 	</dependencyManagement>
 
+	<!-- ************************************************************************************************** -->
+	<!-- *** DEPENDANSIES *** -->
 	<dependencies>
 		<!-- *** QUARKUS-->
 		<dependency>
@@ -62,6 +65,24 @@
 		</dependency>
 		<!-- QUARKUS *** -->
 
+        <!-- Allow use of LocalDate -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+
+		<!-- Что-то про XML -->
 		<dependency>
 			<groupId>jakarta.xml.bind</groupId>
 			<artifactId>jakarta.xml.bind-api</artifactId>
@@ -74,6 +95,9 @@
 			<scope>runtime</scope>
 		</dependency>
 	</dependencies>
+	
+	<!-- ************************************************************************************************** -->
+	<!-- *** BUILD *** -->
 	<build>
 		<plugins>
 			<plugin>
@@ -112,6 +136,9 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<!-- ************************************************************************************************** -->
+	<!-- *** PROFILES *** -->
 	<profiles>
 		<profile>
 			<id>native</id>
