@@ -5,6 +5,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.w3c.dom.NamedNodeMap;
 import org.xml.sax.SAXException;
 
 import ru.miroque.personal.profile.model.concept.dao.DaoKnowledge;
@@ -13,7 +14,7 @@ import ru.miroque.personal.profile.model.concept.exception.ExceptionBadWorkWithX
 import ru.miroque.personal.profile.model.concept.exception.ExceptionNotPersisted;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Alternative;
+import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
@@ -37,7 +38,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Collections;
 
-@Alternative
+@Default
 @ApplicationScoped
 public class DaoKnowledgeXml implements DaoKnowledge {
 	@Inject
@@ -71,6 +72,43 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 		transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
 
 		transformer.transform(new DOMSource(doc), new StreamResult(new OutputStreamWriter(out, StandardCharsets.UTF_8)));
+	}
+
+	private static void printNote(NodeList nodeList) {
+
+		for (int count = 0; count < nodeList.getLength(); count++) {
+  
+			Node tempNode = nodeList.item(count);
+  
+			// make sure it's element node.
+			if (tempNode.getNodeType() == Node.ELEMENT_NODE) {
+  
+				// get node name and value
+				System.out.println("\nNode Name =" + tempNode.getNodeName() + " [OPEN]");
+				System.out.println("Node Value =" + tempNode.getTextContent());
+  
+				if (tempNode.hasAttributes()) {
+  
+					// get attributes names and values
+					NamedNodeMap nodeMap = tempNode.getAttributes();
+					for (int i = 0; i < nodeMap.getLength(); i++) {
+						Node node = nodeMap.item(i);
+						System.out.println("attr name : " + node.getNodeName());
+						System.out.println("attr value : " + node.getNodeValue());
+					}
+  
+				}
+  
+				if (tempNode.hasChildNodes()) {
+					// loop again if has child nodes
+					printNote(tempNode.getChildNodes());
+				}
+  
+				System.out.println("Node Name =" + tempNode.getNodeName() + " [CLOSE]");
+  
+			}
+  
+		}
 	}
 
 	private Element extractDataNode(Document document) throws ExceptionBadWorkWithXml {
@@ -211,15 +249,16 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 		NodeList items;
 		try {
 			items = (NodeList) xPath.evaluate("/personal-profile/data/descendant-or-self::*/knowledge", data, XPathConstants.NODESET);
-			for (int i = 0; i < items.getLength(); ++i) {
-				Element e = (Element) items.item(i);
-				log.infov("e::{0}", e);
-				log.infov("e.getTagName()::{0}", e.getTagName());
-				log.infov("e.getTextContent()::{0}", e.getTextContent());
-				// System.out.println("e.getParentNode().getTextContent() = " + e.getParentNode().getTextContent());
-				// System.out.println("e.getParentNode().getNodeName() = " + e.getParentNode().getNodeName());
+			printNote(items);
+			// for (int i = 0; i < items.getLength(); ++i) {
+			// 	Element e = (Element) items.item(i);
+			// 	log.infov("e::{0}", e);
+			// 	log.infov("e.getTagName()::{0}", e.getTagName());
+			// 	log.infov("e.getTextContent()::{0}", e.getTextContent());
+			// 	// System.out.println("e.getParentNode().getTextContent() = " + e.getParentNode().getTextContent());
+			// 	// System.out.println("e.getParentNode().getNodeName() = " + e.getParentNode().getNodeName());
 	
-			}
+			// }
 		} catch (XPathExpressionException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();

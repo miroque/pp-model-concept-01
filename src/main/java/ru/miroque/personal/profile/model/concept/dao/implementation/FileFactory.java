@@ -15,7 +15,6 @@ public class FileFactory {
 	@Inject
 	Logger log;
 
-	@Alternative
 	@Produces
 	public File filePath(){
 		Path pathDefaultSubdirectory = Path.of("./payload/");
@@ -57,40 +56,5 @@ public class FileFactory {
 			return pathNewCreatedFile.toFile();
 		}
 	}
-
-	@Produces
-	public File fileJson(){
-		Path pathDefaultSubdirectory = Path.of("./payload/");
-		Path pathDefaultFile = Path.of("default.json");
-		Path pathDefaultCombinedFull = pathDefaultSubdirectory.resolve(pathDefaultFile);
-
-		if (Files.exists(pathDefaultSubdirectory) && Files.isDirectory(pathDefaultSubdirectory)){
-			log.info("Directory exists!");
-		} else {
-			log.warn("Directory DOES NOT EXISTS!");
-			try {
-				Files.createDirectories(pathDefaultSubdirectory);
-				log.info("Directory CREATED!");
-			} catch (IOException e) {
-				log.error("directory not created due error", e);
-				throw new RuntimeException(e);
-			}
-		}
-
-		if (Files.exists(pathDefaultCombinedFull)) {
-			log.infov("File exists, return one: {0}", pathDefaultCombinedFull.toString());
-			return pathDefaultCombinedFull.toFile();
-		} else {
-			log.warn("File does not exists!");
-			Path pathNewCreatedFile;
-			try {
-				pathNewCreatedFile = Files.createFile(pathDefaultCombinedFull);
-			} catch (IOException e) {
-				log.info("file not created due error", e);
-				throw new RuntimeException(e);
-			}
-			log.infov("return new created one: {0}", pathDefaultCombinedFull.toString());
-			return pathNewCreatedFile.toFile();
-		}
-	}
+	
 }

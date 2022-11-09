@@ -6,12 +6,12 @@ import ru.miroque.personal.profile.model.concept.exception.ExceptionNotPersisted
 import ru.miroque.personal.profile.model.concept.service.ServiceKnowledge;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Alternative;
+import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 import javax.xml.xpath.XPathExpressionException;
 import java.util.Collection;
 
-@Alternative
+@Default
 @ApplicationScoped
 public class ServiceKnowledgeXml implements ServiceKnowledge {
 
