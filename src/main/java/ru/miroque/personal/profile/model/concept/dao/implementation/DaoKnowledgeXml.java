@@ -42,7 +42,7 @@ import java.util.Collections;
 @ApplicationScoped
 public class DaoKnowledgeXml implements DaoKnowledge {
 	@Inject
-	Logger log;
+	private Logger log;
 	private final Document storage;
 	private final File storagePath;
 	private final Element data;
@@ -156,21 +156,21 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 	 */
 	@Override
 	public void createOrUpdate(Knowledge item) throws ExceptionNotPersisted {
-		log.infof("Parent: %s, Item: %s", null, item);
+		log.infov("Item: {0}", item);
 		try {
 			XPath xPath = XPathFactory.newInstance().newXPath();
-			NodeList nodes = (NodeList) xPath.evaluate("//*[text()='" + item.getName() + "']", data, XPathConstants.NODESET);
+			NodeList nodes = (NodeList) xPath.evaluate("//name[text()='" + item.getName() + "']", data, XPathConstants.NODESET);
 			if (nodes.getLength() == 0) {
 				generateNewKnowledgeNode(item, data);
 				saveXmlFile();
-				log.info("saved new Knowledge");
+				log.infov("saved new Knowledge::{0}", item);
 
 			} else if (nodes.getLength() == 1) {
 				//TODO: replace i18n
 				throw new ExceptionNotPersisted("Уже есть такой элемент в \"Хранилище\"");
 			} else {
 				//TODO: replace i18n
-				throw new ExceptionNotPersisted("Нашлось несколько элемент в \"Хранилище\"");
+				throw new ExceptionNotPersisted("Нашлось несколько элементов в \"Хранилище\", вообще-то это невозможный вариант");
 			}
 		} catch (XPathExpressionException e) {
 			//TODO: replace i18n
@@ -183,16 +183,26 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 	 */
 	@Override
 	public void createOrUpdate(Knowledge parent, Knowledge item) throws ExceptionNotPersisted {
-		log.infof("Parent: {%s}, Item: {%s}", parent, item);
+		log.infov("Parent: {0}, Item: {1}", parent, item);
 		try {
 			XPath xPath = XPathFactory.newInstance().newXPath();
-			Node parentNode = (Node) xPath.evaluate("/personal-profile/data/descendant-or-self::*/knowledge[@id=" + parent.getId() + "]", data, XPathConstants.NODE);
+			Node parentNode = (Node) xPath.evaluate("/personal-profile/data/descendant-or-self::knowledge[@id=" + parent.getId() + "]", data, XPathConstants.NODE);
 			if (parentNode != null) {
 				xPath = XPathFactory.newInstance().newXPath();
 				Node childNode = (Node) xPath.evaluate("self::*/knowledge[@id=" + item.getId() + "]", parentNode, XPathConstants.NODE);
 				if (childNode != null) {
 //					childNode.getFirstChild().getNextSibling().setTextContent(item.getName());
-					childNode.getFirstChild()/*.getNextSibling()*/.setTextContent(item.getName()); // <<<--- вот это рабочий вариант.. он обновляет значение тега НЕЙМ
+					// childNode.getFirstChild()/*.getNextSibling()*/.setTextContent(item.getName()); // <<<--- вот это рабочий вариант.. он обновляет значение тега НЕЙМ
+					NodeList nodeList = childNode.getChildNodes();
+					log.tracev("reap all ancestors.lenght::{0}", nodeList.getLength());
+					if (nodeList.getLength() == 1){
+						Node node = nodeList.item(0);;
+						if(node.getNodeName().equals("name")){
+							log.tracev("text from::{0}", node.getTextContent());
+							node.setTextContent(item.getName());
+							log.tracev("text into::{0}", node.getTextContent());
+						}
+					}
 				} else {
 					generateNewKnowledgeNode(item, parentNode);
 				}
