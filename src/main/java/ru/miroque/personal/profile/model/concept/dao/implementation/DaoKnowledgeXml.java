@@ -57,6 +57,7 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 		DocumentBuilder documentBuilder;
 		documentBuilder = documentBuilderFactory.newDocumentBuilder();
 		storage = documentBuilder.parse(storagePath);
+		storage.getDocumentElement().normalize();
 		data = extractDataNode(storage);
 	}
 
@@ -195,6 +196,14 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 					// childNode.getFirstChild()/*.getNextSibling()*/.setTextContent(item.getName()); // <<<--- вот это рабочий вариант.. он обновляет значение тега НЕЙМ
 					NodeList nodeList = childNode.getChildNodes();
 					log.tracev("reap all ancestors.lenght::{0}", nodeList.getLength());
+					for (int i=0; i<nodeList.getLength(); i++){
+						log.trace(">>..> ::");
+						Node n =  nodeList.item(i);
+						log.tracev(">>..> :: n.NodeName [{0}]", n.getNodeName());
+						log.tracev(">>..> :: n.NodeValue [{0}]", n.getNodeValue());
+						log.tracev(">>..> :: n.TextContent [{0}]", n.getTextContent());
+						log.tracev(">>..> :: n.NodeType [{0}]", n.getNodeType());
+					}
 					if (nodeList.getLength() == 1){
 						Node node = nodeList.item(0);;
 						if(node.getNodeName().equals("name")){
@@ -202,6 +211,9 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 							node.setTextContent(item.getName());
 							log.tracev("text into::{0}", node.getTextContent());
 						}
+					} else {
+						//TODO: replace i18n
+						throw new ExceptionNotPersisted("Что-то чудное однако! Должен был быть только один элемент!");
 					}
 				} else {
 					generateNewKnowledgeNode(item, parentNode);
