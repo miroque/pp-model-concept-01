@@ -26,6 +26,8 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
@@ -42,7 +44,7 @@ import java.util.Collections;
 @ApplicationScoped
 public class DaoKnowledgeXml implements DaoKnowledge {
 	@Inject
-	private Logger log;
+	Logger log;
 	private final Document storage;
 	private final File storagePath;
 	private final Element data;
@@ -51,14 +53,25 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 	public DaoKnowledgeXml(File file) throws ExceptionBadWorkWithXml, SAXException, IOException, ParserConfigurationException {
 		storagePath = file;
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+		// this.getClass().getClassLoader().getResourceAsStream(storeFile.getPath())
+		File fileSchema = new File("personal-profile.xsd");
+
+         // create schema
+         SchemaFactory xsdFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+         Schema schema = xsdFactory.newSchema(fileSchema);
+
 		// or prohibit the use of all protocols by external entities:
+		// documentBuilderFactory.setValidating(true);
+		documentBuilderFactory.setSchema(schema);
+		// documentBuilderFactory.setIgnoringElementContentWhitespace(true);
 		documentBuilderFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
 		documentBuilderFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+		documentBuilderFactory.setIgnoringComments(true);
 		DocumentBuilder documentBuilder;
 		documentBuilder = documentBuilderFactory.newDocumentBuilder();
 		storage = documentBuilder.parse(storagePath);
 		storage.getDocumentElement().normalize();
-		data = extractDataNode(storage);
+		data = extractNode(storage, "data");
 	}
 
 	public static void printDocument(Document doc, OutputStream out) throws IOException, TransformerException {
@@ -112,9 +125,9 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 		}
 	}
 
-	private Element extractDataNode(Document document) throws ExceptionBadWorkWithXml {
+	private Element extractNode(Document document, String nameOfNode) throws ExceptionBadWorkWithXml {
 		Element root = storage.getDocumentElement();
-		NodeList nodes = root.getElementsByTagName("data");
+		NodeList nodes = root.getElementsByTagName(nameOfNode);
 
 		if (nodes.getLength() == 1) {
 			return (Element) nodes.item(0);
@@ -303,7 +316,7 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 			Transformer transformer = factory.newTransformer();
 			StreamResult result = new StreamResult(storagePath);
 			transformer.setOutputProperty(OutputKeys.METHOD, "xml");
-			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+			// transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 			transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
 			// transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
 			transformer.transform(source, result);
