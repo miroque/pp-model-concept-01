@@ -1,0 +1,11 @@
+<docu>
+    <kno>
+        <name>one-name</name>
+        <kno>
+            <name>one-name::one-name</name>
+        </kno>
+    </kno>
+    <kno>
+        <name>two-name</name>
+    </kno>
+</docu>

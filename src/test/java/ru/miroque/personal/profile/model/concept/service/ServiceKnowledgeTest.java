@@ -10,10 +10,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import   org.junit.jupiter.api.Test;
 
-import ru.miroque.personal.profile.model.concept.dao.DaoKnowledgeXml;
+import ru.miroque.personal.profile.model.concept.dao.implementation.DaoKnowledgeXml;
 import ru.miroque.personal.profile.model.concept.entity.Knowledge;
 import ru.miroque.personal.profile.model.concept.exception.ExceptionBadWorkWithXml;
 import ru.miroque.personal.profile.model.concept.exception.ExceptionNotPersisted;
+import ru.miroque.personal.profile.model.concept.service.implementation.ServiceKnowledgeXml;
 
 import javax.xml.xpath.XPathExpressionException;
 
