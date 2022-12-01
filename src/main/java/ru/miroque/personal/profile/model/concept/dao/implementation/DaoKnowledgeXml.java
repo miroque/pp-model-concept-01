@@ -54,15 +54,15 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 		storagePath = file;
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 		// this.getClass().getClassLoader().getResourceAsStream(storeFile.getPath())
-		File fileSchema = new File("personal-profile.xsd");
+		// File fileSchema = new File("personal-profile.xsd");
 
          // create schema
-         SchemaFactory xsdFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-         Schema schema = xsdFactory.newSchema(fileSchema);
+        //  SchemaFactory xsdFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+        //  Schema schema = xsdFactory.newSchema(fileSchema);
 
 		// or prohibit the use of all protocols by external entities:
 		// documentBuilderFactory.setValidating(true);
-		documentBuilderFactory.setSchema(schema);
+		// documentBuilderFactory.setSchema(schema);
 		// documentBuilderFactory.setIgnoringElementContentWhitespace(true);
 		documentBuilderFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
 		documentBuilderFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
