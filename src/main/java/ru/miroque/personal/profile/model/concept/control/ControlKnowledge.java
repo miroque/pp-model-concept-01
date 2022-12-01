@@ -14,7 +14,7 @@ import javax.ws.rs.core.Response;
 @Path("/knowledge")
 public interface ControlKnowledge {
 
-	@GET
+	// @GET
 	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Operation(
@@ -29,7 +29,7 @@ public interface ControlKnowledge {
 	)
 	Response items();
 
-	@GET
+	// @GET
 	@Path("/{id:\\d+}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Operation(
@@ -44,7 +44,7 @@ public interface ControlKnowledge {
 	)
 	Response item(@PathParam("id") Long id);
 
-	@GET
+	// @GET
 	@Path("/{name}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Operation(
