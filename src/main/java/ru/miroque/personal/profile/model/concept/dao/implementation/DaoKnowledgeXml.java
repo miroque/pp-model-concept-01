@@ -26,6 +26,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.xpath.XPath;
@@ -313,12 +314,12 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 		factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
 		factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
 		try {
-			Transformer transformer = factory.newTransformer();
+			Transformer transformer = factory.newTransformer(new StreamSource(getClass().getClassLoader().getResourceAsStream("pretty-print.xslt")));
 			StreamResult result = new StreamResult(storagePath);
 			transformer.setOutputProperty(OutputKeys.METHOD, "xml");
-			// transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 			transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-			// transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+			transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
 			transformer.transform(source, result);
 		} catch (TransformerException e) {
 			//TODO: replace i18n
