@@ -1,15 +1,15 @@
 package ru.miroque.personal.profile.model.concept.dao.implementation;
 
-import org.jboss.logging.Logger;
-
-import javax.enterprise.inject.Alternative;
-import javax.enterprise.inject.Produces;
-import javax.inject.Inject;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+
+import javax.enterprise.inject.Produces;
+import javax.inject.Inject;
+
+import org.jboss.logging.Logger;
 
 public class FileFactory {
 	@Inject
@@ -42,7 +42,7 @@ public class FileFactory {
 			Path pathNewCreatedFile = null;
 			try {
 				String content = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>" +
-								"<personal-profile xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"personal-profile.xsd\">" +
+								"<personal-profile xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">" +
 								" <identity> </identity>" +
 								" <data> </data>" +
 								"</personal-profile>";

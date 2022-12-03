@@ -154,3 +154,7 @@ To use modern schema languages such as W3C XML Schema or RELAX NG instead of DTD
 И что!? где я и где моя идея и где мой проект!?!??!?!?
 
 Опять не пойми где всё это шляется.
+
+== 03.12.2022
+
+Нашел сегодня интересную статью про https://habr.com/ru/post/52680/[Оси XPath ]

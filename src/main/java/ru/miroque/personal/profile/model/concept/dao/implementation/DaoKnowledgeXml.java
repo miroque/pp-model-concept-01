@@ -1,17 +1,12 @@
 package ru.miroque.personal.profile.model.concept.dao.implementation;
 
-import org.jboss.logging.Logger;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.NamedNodeMap;
-import org.xml.sax.SAXException;
-
-import ru.miroque.personal.profile.model.concept.dao.DaoKnowledge;
-import ru.miroque.personal.profile.model.concept.entity.Knowledge;
-import ru.miroque.personal.profile.model.concept.exception.ExceptionBadWorkWithXml;
-import ru.miroque.personal.profile.model.concept.exception.ExceptionNotPersisted;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
+import java.util.Collection;
+import java.util.Collections;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Default;
@@ -27,19 +22,22 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-import javax.xml.validation.Schema;
-import javax.xml.validation.SchemaFactory;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.nio.charset.StandardCharsets;
-import java.util.Collection;
-import java.util.Collections;
+
+import org.jboss.logging.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
+import ru.miroque.personal.profile.model.concept.dao.DaoKnowledge;
+import ru.miroque.personal.profile.model.concept.entity.Knowledge;
+import ru.miroque.personal.profile.model.concept.exception.ExceptionBadWorkWithXml;
+import ru.miroque.personal.profile.model.concept.exception.ExceptionNotPersisted;
 
 @Default
 @ApplicationScoped
@@ -54,20 +52,24 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 	public DaoKnowledgeXml(File file) throws ExceptionBadWorkWithXml, SAXException, IOException, ParserConfigurationException {
 		storagePath = file;
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-		// this.getClass().getClassLoader().getResourceAsStream(storeFile.getPath())
-		// File fileSchema = new File(this.getClass().getClassLoader().getResourceAsStream("personal-profile.xsd"));
 
+		// Отключил момент с ВАЛИДАЦИЕЙ.
+		// И сама схема, не очень нужная мне, и валидатор, так себе в этой конфигурации работает.
+		// Не разобрался ещё до конца.
+
+		// StreamSource streamSource  = new StreamSource (DaoKnowledgeXml.class.getClassLoader().getResourceAsStream("personal-profile.xsd"));
+		
          // create schema
-        //  SchemaFactory xsdFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-        //  Schema schema = xsdFactory.newSchema(fileSchema);
+		// SchemaFactory xsdFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+		// Schema schema = xsdFactory.newSchema(streamSource);
 
 		// or prohibit the use of all protocols by external entities:
 		// documentBuilderFactory.setValidating(true);
 		// documentBuilderFactory.setSchema(schema);
 		// documentBuilderFactory.setIgnoringElementContentWhitespace(true);
-		documentBuilderFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
-		documentBuilderFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
-		documentBuilderFactory.setIgnoringComments(true);
+		// documentBuilderFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+		// documentBuilderFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+		// documentBuilderFactory.setIgnoringComments(true);
 		DocumentBuilder documentBuilder;
 		documentBuilder = documentBuilderFactory.newDocumentBuilder();
 		storage = documentBuilder.parse(storagePath);
@@ -89,43 +91,15 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 		transformer.transform(new DOMSource(doc), new StreamResult(new OutputStreamWriter(out, StandardCharsets.UTF_8)));
 	}
 
-	private static void printNote(NodeList nodeList) {
-
-		for (int count = 0; count < nodeList.getLength(); count++) {
-  
-			Node tempNode = nodeList.item(count);
-  
-			// make sure it's element node.
-			if (tempNode.getNodeType() == Node.ELEMENT_NODE) {
-  
-				// get node name and value
-				System.out.println("\nNode Name =" + tempNode.getNodeName() + " [OPEN]");
-				System.out.println("Node Value =" + tempNode.getTextContent());
-  
-				if (tempNode.hasAttributes()) {
-  
-					// get attributes names and values
-					NamedNodeMap nodeMap = tempNode.getAttributes();
-					for (int i = 0; i < nodeMap.getLength(); i++) {
-						Node node = nodeMap.item(i);
-						System.out.println("attr name : " + node.getNodeName());
-						System.out.println("attr value : " + node.getNodeValue());
-					}
-  
-				}
-  
-				if (tempNode.hasChildNodes()) {
-					// loop again if has child nodes
-					printNote(tempNode.getChildNodes());
-				}
-  
-				System.out.println("Node Name =" + tempNode.getNodeName() + " [CLOSE]");
-  
-			}
-  
-		}
-	}
-
+	/**
+	 * Метод для вычленения Element(Node).
+	 * Ну типа -=Оптимизация=-
+	 * 
+	 * @param document из которого нужно достать требуемый мне узел
+	 * @param nameOfNode -Имя- узла который хочу вернуть
+	 * @return Element(Node) с указанным -Именем-
+	 * @throws ExceptionBadWorkWithXml
+	 */
 	private Element extractNode(Document document, String nameOfNode) throws ExceptionBadWorkWithXml {
 		Element root = storage.getDocumentElement();
 		NodeList nodes = root.getElementsByTagName(nameOfNode);
@@ -171,7 +145,7 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 	 */
 	@Override
 	public void createOrUpdate(Knowledge item) throws ExceptionNotPersisted {
-		log.infov("Item: {0}", item);
+		log.infov("🔰[item]::{0}", item);
 		try {
 			XPath xPath = XPathFactory.newInstance().newXPath();
 			NodeList nodes = (NodeList) xPath.evaluate("//name[text()='" + item.getName() + "']", data, XPathConstants.NODESET);
@@ -197,40 +171,29 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 	 * Сохраняем Знание, в указанный "Родитель"
 	 */
 	@Override
-	public void createOrUpdate(Knowledge parent, Knowledge item) throws ExceptionNotPersisted {
-		log.infov("Parent: {0}, Item: {1}", parent, item);
+	public void createOrUpdate(Knowledge parent, Knowledge descendant) throws ExceptionNotPersisted {
+		log.infov("🔰[parent]::{0}", parent);
+		log.infov("🔰[descendant]::{0}", descendant);
 		try {
-			XPath xPath = XPathFactory.newInstance().newXPath();
-			Node parentNode = (Node) xPath.evaluate("/personal-profile/data/descendant-or-self::knowledge[@id=" + parent.getId() + "]", data, XPathConstants.NODE);
-			if (parentNode != null) {
-				xPath = XPathFactory.newInstance().newXPath();
-				Node childNode = (Node) xPath.evaluate("self::*/knowledge[@id=" + item.getId() + "]", parentNode, XPathConstants.NODE);
-				if (childNode != null) {
-//					childNode.getFirstChild().getNextSibling().setTextContent(item.getName());
-					// childNode.getFirstChild()/*.getNextSibling()*/.setTextContent(item.getName()); // <<<--- вот это рабочий вариант.. он обновляет значение тега НЕЙМ
-					NodeList nodeList = childNode.getChildNodes();
-					log.tracev("reap all ancestors.lenght::{0}", nodeList.getLength());
-					for (int i=0; i<nodeList.getLength(); i++){
-						log.trace(">>..> ::");
-						Node n =  nodeList.item(i);
-						log.tracev(">>..> :: n.NodeName [{0}]", n.getNodeName());
-						log.tracev(">>..> :: n.NodeValue [{0}]", n.getNodeValue());
-						log.tracev(">>..> :: n.TextContent [{0}]", n.getTextContent());
-						log.tracev(">>..> :: n.NodeType [{0}]", n.getNodeType());
-					}
-					if (nodeList.getLength() == 1){
-						Node node = nodeList.item(0);;
-						if(node.getNodeName().equals("name")){
-							log.tracev("text from::{0}", node.getTextContent());
-							node.setTextContent(item.getName());
-							log.tracev("text into::{0}", node.getTextContent());
-						}
-					} else {
-						//TODO: replace i18n
-						throw new ExceptionNotPersisted("Что-то чудное однако! Должен был быть только один элемент!");
-					}
+			XPath xPath_Parent = XPathFactory.newInstance().newXPath();
+			Node node_Parent = (Node) xPath_Parent.evaluate("/personal-profile/data/descendant-or-self::knowledge[@id=" + parent.getId() + "]", data, XPathConstants.NODE);
+			// Родительский элемент -- да
+			log.tracev("🔸 [node_Parent]::{0}", node_Parent);
+			if (node_Parent != null) {
+				XPath  xPath_Descendant = XPathFactory.newInstance().newXPath();
+				Node node_Descendant = (Node) xPath_Descendant.evaluate("self::*/knowledge[@id=" + descendant.getId() + "]", node_Parent, XPathConstants.NODE);
+				// элемент Потомок -- да
+				log.tracev("🔸 [node_Descendant]::{0}", node_Descendant);
+				if (node_Descendant != null) {
+					log.trace("🏳️ descendant is NOT null");
+					XPath  xPath_Descendant_Name = XPathFactory.newInstance().newXPath();
+					Node node_Descendant_Name = (Node) xPath_Descendant_Name.evaluate("self::*/name", node_Descendant, XPathConstants.NODE);
+					log.tracev("🔸 text from::{0}", node_Descendant_Name.getTextContent());
+					node_Descendant_Name.setTextContent(descendant.getName());
+					log.tracev("🔸 text into::{0}", node_Descendant_Name.getTextContent());
 				} else {
-					generateNewKnowledgeNode(item, parentNode);
+					log.trace("🏴 descendant is null");
+					generateNewKnowledgeNode(descendant, node_Parent);
 				}
 				saveXmlFile();
 //			} else if (parentNode == null) {
@@ -285,7 +248,7 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 		NodeList items;
 		try {
 			items = (NodeList) xPath.evaluate("/personal-profile/data/descendant-or-self::*/knowledge", data, XPathConstants.NODESET);
-			printNote(items);
+			// printNote(items);
 			// for (int i = 0; i < items.getLength(); ++i) {
 			// 	Element e = (Element) items.item(i);
 			// 	log.infov("e::{0}", e);
@@ -304,7 +267,9 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 	}
 
 	/**
-	 * Сохраняет полностью весь файл.
+	 * <p>Сохраняет рабочий Документ в файл</p>
+	 * <p>Но сам Документ не закрывает, и не перечитывает потом из файла</p>
+	 * <p>Только сохранение</p>
 	 *
 	 * @throws ExceptionNotPersisted
 	 */
