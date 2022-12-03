@@ -55,7 +55,7 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 		storagePath = file;
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 		// this.getClass().getClassLoader().getResourceAsStream(storeFile.getPath())
-		// File fileSchema = new File("personal-profile.xsd");
+		// File fileSchema = new File(this.getClass().getClassLoader().getResourceAsStream("personal-profile.xsd"));
 
          // create schema
         //  SchemaFactory xsdFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
