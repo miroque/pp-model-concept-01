@@ -236,18 +236,10 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 		List<Knowledge> items = new ArrayList<Knowledge>();
 		for (int i = 0; i < itemsRaw.getLength(); i++) {
 			Knowledge item = new Knowledge();
-			Node node = itemsRaw.item(i);
-			log.tracev("♻ 🔸 [node.getChildName.lenght]::{0}", node.getChildNodes().getLength());
-			NodeList descendants = node.getChildNodes();
-			for (int j = 0; j < descendants.getLength(); j++) {
-				Node descendant = descendants.item(j);
-				if (descendant.getNodeName().equals("name")) {
-					log.tracev("♻ ♻ 🔸 [node.descendant.name]::{0}", descendant.getTextContent());
-					item.setName(descendant.getTextContent());
-				}
-			}
+			Element node = (Element) itemsRaw.item(i);
 			item.setId(Long.valueOf(node.getAttributes().getNamedItem("id").getNodeValue()));
-			log.tracev("♻ 🔸 [node.knowledge.id]::{0}", node.getAttributes().getNamedItem("id"));
+			item.setName(node.getElementsByTagName("name").item(0).getTextContent());
+			log.tracev("♻ 🔸 [item]::{0}", item);
 			items.add(item);
 		}
 		log.trace("🏁");
