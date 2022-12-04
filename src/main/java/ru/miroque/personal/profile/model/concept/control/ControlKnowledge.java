@@ -29,6 +29,22 @@ public interface ControlKnowledge {
 	)
 	Response items();
 
+
+	@GET
+	@Path("/r")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Operation(
+			operationId = "getAllAtRoot",
+			summary = "Get all Knowledges at Root Level",
+			description = "Getting all existing Knowledges at Root Level"
+	)
+	@APIResponse(
+			responseCode = "200",
+			description = "some resource gettig",
+			content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = Knowledge.class))
+	)
+	Response itemsAtRoot();
+
 	// @GET
 	@Path("/{id:\\d+}")
 	@Produces(MediaType.APPLICATION_JSON)

@@ -27,6 +27,18 @@ public class ControlKnowledgeDefault implements ControlKnowledge {
 			return Response.serverError().build();
 		}
 	}
+
+	@Override
+	public Response itemsAtRoot() {
+		try {
+			return Response.status(200).entity(service.findAllAtRoot()).build();
+		} catch (Exception e) {
+			log.error(e);
+//			throw new ExceptionBadWorkWithXml(String.format(bundle.getString("error.answer.not-found"), id));
+			return Response.serverError().build();
+		}
+	}
+	
 	@Override
 	public Response item(Long id) {
 		//TODO: implement in SERVICE

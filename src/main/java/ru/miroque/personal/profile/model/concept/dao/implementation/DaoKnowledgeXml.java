@@ -248,46 +248,27 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 
 	@Override
 	public Collection<Knowledge> findAllAtRoot() {
-		NodeList itemsRaw = storage.getElementsByTagName("knowledge");
-		
-		// Что-то так себе это вышло у меня
-		// for (int i = 0; i < itemsRaw.getLength(); i++) {
-		// 	Node itemRaw = itemsRaw.item(i);
-		// 	if(itemRaw.getNodeType()==Node.ELEMENT_NODE){
-		// 		Element e = (Element)itemRaw;
-		// 		NodeList names = e.getElementsByTagName("name");
-		// 		for (int j = 0; j < names.getLength(); j++) {
-		// 			Node name = names.item(j);
-		// 			if (name.getNodeType()==Node.ELEMENT_NODE) {
-		// 				Element n = (Element) name;
-		// 				log.infov("<>>sample-data-test>name-node-value::{0}", n.getTextContent());
-		// 			}
-		// 		}
-		// 	}
-		// }
-
-		// Evaluate XPath against Document itself
-		XPath xPath = XPathFactory.newInstance().newXPath();
-		// NodeList nodes = (NodeList) xPath.evaluate("//*[text()='" + name + "']", data, XPathConstants.NODESET);
-		NodeList items;
+		log.trace("🚩");
+		List<Knowledge> items = new ArrayList<Knowledge>();
 		try {
-			items = (NodeList) xPath.evaluate("/personal-profile/data/descendant-or-self::*/knowledge", data, XPathConstants.NODESET);
-			// printNote(items);
-			// for (int i = 0; i < items.getLength(); ++i) {
-			// 	Element e = (Element) items.item(i);
-			// 	log.infov("e::{0}", e);
-			// 	log.infov("e.getTagName()::{0}", e.getTagName());
-			// 	log.infov("e.getTextContent()::{0}", e.getTextContent());
-			// 	// System.out.println("e.getParentNode().getTextContent() = " + e.getParentNode().getTextContent());
-			// 	// System.out.println("e.getParentNode().getNodeName() = " + e.getParentNode().getNodeName());
-	
-			// }
+			XPath xPath = XPathFactory.newInstance().newXPath();
+			NodeList itemsRaw = (NodeList) xPath.evaluate("/personal-profile/data/child::knowledge", data, XPathConstants.NODESET);
+			log.tracev("🔸 [itemsRaw.size]::{0}", itemsRaw.getLength());
+			for (int i = 0; i < itemsRaw.getLength(); i++) {
+				Knowledge item = new Knowledge();
+				Element node = (Element) itemsRaw.item(i);
+				item.setId(Long.valueOf(node.getAttributes().getNamedItem("id").getNodeValue()));
+				item.setName(node.getElementsByTagName("name").item(0).getTextContent());
+				log.tracev("♻ 🔸 [item]::{0}", item);
+				items.add(item);
+			}
 		} catch (XPathExpressionException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		// TODO: Здесь необходимо сделать конрвертатор из Нодов В Знания
-		return Collections.emptyList();
+		log.trace("🏁");
+		return items;
 	}
 
 	/**
