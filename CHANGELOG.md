@@ -9,13 +9,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## v [0.1.0] - 2022-12-03
+### ✨ Added
+
+- "Show" all Knowledges in Storage
+
+### ♻ Changed
+
+- XSD Scheme add constrains
+
+## v[0.1.0] - 2022-12-03
 
 ### 🛠 Fixed
 
 - Pretty print XML formatter
 
 ### 🔥 Removed
+
  - XSD Validation
 
 [unreleased]: https://github.com/miroque/pp-model-concept-01/compare/0.1.0..HEAD
