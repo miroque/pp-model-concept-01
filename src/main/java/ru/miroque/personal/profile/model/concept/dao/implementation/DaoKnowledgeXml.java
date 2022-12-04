@@ -5,8 +5,10 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Default;
@@ -93,11 +95,11 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 
 	/**
 	 * Метод для вычленения Element(Node).
-	 * Ну типа -=Оптимизация=-
+	 * Ну типа <em>-=Оптимизация=-</em>
 	 * 
 	 * @param document из которого нужно достать требуемый мне узел
-	 * @param nameOfNode -Имя- узла который хочу вернуть
-	 * @return Element(Node) с указанным -Именем-
+	 * @param nameOfNode <em>Имя</em> узла который хочу вернуть
+	 * @return Element(Node) с указанным <em>Именем</em>
 	 * @throws ExceptionBadWorkWithXml
 	 */
 	private Element extractNode(Document document, String nameOfNode) throws ExceptionBadWorkWithXml {
@@ -220,6 +222,36 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 		childKnowledge.appendChild(name);
 
 		parentNode.appendChild(childKnowledge);
+	}
+
+	/**
+	 * <p>Возвращает, все <em>Знания</em>, которые есть в <em>Хранилище</em></p>
+	 * <p>Без структуры, чисто Список</p>
+	 */
+	@Override
+	public Collection<Knowledge> finAllInStorage() {
+		log.trace("🚩");
+		NodeList itemsRaw = storage.getElementsByTagName("knowledge");
+		log.tracev("🔸 [itemsRaw.size]::{0}", itemsRaw.getLength());
+		List<Knowledge> items = new ArrayList<Knowledge>();
+		for (int i = 0; i < itemsRaw.getLength(); i++) {
+			Knowledge item = new Knowledge();
+			Node node = itemsRaw.item(i);
+			log.tracev("♻ 🔸 [node.getChildName.lenght]::{0}", node.getChildNodes().getLength());
+			NodeList descendants = node.getChildNodes();
+			for (int j = 0; j < descendants.getLength(); j++) {
+				Node descendant = descendants.item(j);
+				if (descendant.getNodeName().equals("name")) {
+					log.tracev("♻ ♻ 🔸 [node.descendant.name]::{0}", descendant.getTextContent());
+					item.setName(descendant.getTextContent());
+				}
+			}
+			item.setId(Long.valueOf(node.getAttributes().getNamedItem("id").getNodeValue()));
+			log.tracev("♻ 🔸 [node.knowledge.id]::{0}", node.getAttributes().getNamedItem("id"));
+			items.add(item);
+		}
+		log.trace("🏁");
+		return items;
 	}
 
 	@Override

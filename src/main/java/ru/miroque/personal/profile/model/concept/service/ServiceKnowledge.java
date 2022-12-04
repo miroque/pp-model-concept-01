@@ -16,4 +16,6 @@ public interface ServiceKnowledge {
 
     Collection<Knowledge> findAllAtRoot();
 
+	Collection<Knowledge> findAllInStorage();
+
 }

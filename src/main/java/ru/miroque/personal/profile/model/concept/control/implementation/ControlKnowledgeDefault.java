@@ -20,7 +20,7 @@ public class ControlKnowledgeDefault implements ControlKnowledge {
 	@Override
 	public Response items() {
 		try {
-			return Response.status(200).entity(service.findAllAtRoot()).build();
+			return Response.status(200).entity(service.findAllInStorage()).build();
 		} catch (Exception e) {
 			log.error(e);
 //			throw new ExceptionBadWorkWithXml(String.format(bundle.getString("error.answer.not-found"), id));

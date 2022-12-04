@@ -14,13 +14,13 @@ import javax.ws.rs.core.Response;
 @Path("/knowledge")
 public interface ControlKnowledge {
 
-	// @GET
+	@GET
 	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Operation(
-			operationId = "getSome",
-			summary = "Get some Resource",
-			description = "getting some test resource"
+			operationId = "getAll",
+			summary = "Get all Knowledges",
+			description = "Getting all existing Knowledges in Storage"
 	)
 	@APIResponse(
 			responseCode = "200",
