@@ -303,7 +303,7 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 		List<Knowledge> items = new ArrayList<Knowledge>();
 		try {
 			XPath xPath = XPathFactory.newInstance().newXPath();
-			NodeList itemsRaw = (NodeList) xPath.evaluate("/personal-profile/data/descendant-or-self::knowledge[@id=" + id + "]/descendant-or-self::knowledge", data, XPathConstants.NODESET);
+			NodeList itemsRaw = (NodeList) xPath.evaluate("/personal-profile/data/descendant-or-self::knowledge[@id=" + id + "]/descendant::knowledge", data, XPathConstants.NODESET);
 			log.tracev("🔸 [itemsRaw.size]::{0}", itemsRaw.getLength());
 			for (int i = 0; i < itemsRaw.getLength(); i++) {
 				Knowledge item = new Knowledge();
