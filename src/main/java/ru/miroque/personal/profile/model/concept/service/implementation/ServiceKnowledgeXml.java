@@ -46,4 +46,9 @@ public class ServiceKnowledgeXml implements ServiceKnowledge {
 	public Collection<Knowledge> findAllInStorage() {
 		return dao.finAllInStorage();
 	}
+
+	@Override
+	public Collection<Knowledge> findAllAtBranch(Long id) {
+		return dao.findAllAtBranch(id);
+	}
 }

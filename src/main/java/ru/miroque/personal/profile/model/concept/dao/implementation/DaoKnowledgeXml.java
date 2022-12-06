@@ -297,4 +297,29 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 		}
 	}
 
+	@Override
+	public Collection<Knowledge> findAllAtBranch(Long id) {
+		log.trace("🚩");
+		List<Knowledge> items = new ArrayList<Knowledge>();
+		try {
+			XPath xPath = XPathFactory.newInstance().newXPath();
+			NodeList itemsRaw = (NodeList) xPath.evaluate("/personal-profile/data/descendant-or-self::knowledge[@id=" + id + "]/descendant-or-self::knowledge", data, XPathConstants.NODESET);
+			log.tracev("🔸 [itemsRaw.size]::{0}", itemsRaw.getLength());
+			for (int i = 0; i < itemsRaw.getLength(); i++) {
+				Knowledge item = new Knowledge();
+				Element node = (Element) itemsRaw.item(i);
+				item.setId(Long.valueOf(node.getAttributes().getNamedItem("id").getNodeValue()));
+				item.setName(node.getElementsByTagName("name").item(0).getTextContent());
+				log.tracev("♻ 🔸 [item]::{0}", item);
+				items.add(item);
+			}
+		} catch (XPathExpressionException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		// TODO: Здесь необходимо сделать конрвертатор из Нодов В Знания
+		log.trace("🏁");
+		return items;
+	}
+
 }

@@ -29,7 +29,6 @@ public interface ControlKnowledge {
 	)
 	Response items();
 
-
 	@GET
 	@Path("/r")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -44,6 +43,21 @@ public interface ControlKnowledge {
 			content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = Knowledge.class))
 	)
 	Response itemsAtRoot();
+
+	@GET
+	@Path("/b/{id:\\d+}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Operation(
+			operationId = "getAllBranch",
+			summary = "Get all Knowledges from Chosen Knowledge",
+			description = "Getting all existing Knowledges from chosen Knowledge"
+	)
+	@APIResponse(
+			responseCode = "200",
+			description = "some resource gettig",
+			content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = Knowledge.class))
+	)
+	Response itemsAtBranch(@PathParam("id") Long id);
 
 	// @GET
 	@Path("/{id:\\d+}")

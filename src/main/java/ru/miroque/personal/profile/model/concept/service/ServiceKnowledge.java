@@ -18,4 +18,6 @@ public interface ServiceKnowledge {
 
 	Collection<Knowledge> findAllInStorage();
 
+    Collection<Knowledge> findAllAtBranch(Long id);
+
 }
