@@ -9,13 +9,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## v[0.2.0] - 2022-12-10
+
 ### ✨ Added
 
 - "Show" all Knowledges in Storage
+- "Show" all Knowledges at "root" level
+- "Show" all Knowledges in chosen Knowledge (like branch select)
 
 ### ♻ Changed
 
 - XSD Scheme add constrains
+- ROADMAP has changed, rearange docker-image step
 
 ## v[0.1.0] - 2022-12-03
 
@@ -27,6 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
  - XSD Validation
 
-[unreleased]: https://github.com/miroque/pp-model-concept-01/compare/0.1.0..HEAD
+[unreleased]: https://github.com/miroque/pp-model-concept-01/compare/0.2.0..HEAD
 
+[0.2.0]: https://github.com/miroque/pp-model-concept-01/releases/tag/0.2.0
 [0.1.0]: https://github.com/miroque/pp-model-concept-01/releases/tag/0.1.0
