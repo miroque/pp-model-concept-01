@@ -9,7 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## v[0.2.0] - 2022-12-10
+### ✨ Added
+
+- Docker files for better experiance
+
+### ♻ Changed
+
+- Bumped java version from 11 to 17
+- Bumped quarkus from 2.9.2.Final to 2.14.2.Final
+
+## v [0.2.0] - 2022-12-10
 
 ### ✨ Added
 
@@ -22,7 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - XSD Scheme add constrains
 - ROADMAP has changed, rearange docker-image step
 
-## v[0.1.0] - 2022-12-03
+## v [0.1.0] - 2022-12-03
 
 ### 🛠 Fixed
 
@@ -30,7 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### 🔥 Removed
 
- - XSD Validation
+- XSD Validation
 
 [unreleased]: https://github.com/miroque/pp-model-concept-01/compare/0.2.0..HEAD
 
