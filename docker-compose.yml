@@ -1,0 +1,16 @@
+version: "3"
+
+services:
+  backend:
+    image: psp/mc-01:0.3.0
+    container_name:  psp-backend
+    build:
+      context: .
+      dockerfile: ./src/main/docker/Dockerfile.jvm
+    # volumes:
+    #   - ./data/file-storage:/deployments/payload
+    ports:
+      - 8080:8080     #api
+    # env_file:
+    #   - env.prod
+    # restart: always
