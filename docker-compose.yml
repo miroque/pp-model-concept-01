@@ -14,6 +14,8 @@ services:
     volumes:
       - ./file-storage:/deployments/payload
     ports:
-      - 8080:8080 # API
+      - 8181:8080 # API
       #- 8443:8443 
+    # environment:
+    #   - QUARKUS_LAUNCH_DEVMODE=true
     restart: 'no'
