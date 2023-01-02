@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>ru.miroque.personal.profile</groupId>
 	<artifactId>model-concept</artifactId>
-	<version>0.3.0-SNAPSHOT</version>
+	<version>0.3.0</version>
 
 	<properties>
 		<java.version>17</java.version>
