@@ -125,20 +125,31 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 	 */
 	@Override
 	public Collection<Knowledge> findByName(String name) throws XPathExpressionException {
+		log.tracev("🔰[name]▓{0}", name);
+		Collection<Knowledge> result = new ArrayList<Knowledge>();
+
 		// Evaluate XPath against Document itself
 		XPath xPath = XPathFactory.newInstance().newXPath();
-		NodeList nodes = (NodeList) xPath.evaluate("//*[text()='" + name + "']", data, XPathConstants.NODESET);
-/*		for (int i = 0; i < nodes.getLength(); ++i) {
+		NodeList nodes = (NodeList) xPath.evaluate("/personal-profile/data/descendant-or-self::knowledge/descendant-or-self::name[contains(text(), '"+name+"')]", data, XPathConstants.NODESET);
+		log.tracev("▍nodes.getLength() ▓ {0}", nodes.getLength());
+		for (int i = 0; i < nodes.getLength(); ++i) {
 			Element e = (Element) nodes.item(i);
-			System.out.println("e = " + e);
-			System.out.println("e.getTagName() = " + e.getTagName());
-			System.out.println("e.getTextContent() = " + e.getTextContent());
-			System.out.println("e.getParentNode().getTextContent() = " + e.getParentNode().getTextContent());
-			System.out.println("e.getParentNode().getNodeName() = " + e.getParentNode().getNodeName());
+			// log.tracev("▍e ▓ {0}", e);
+			log.tracev("▍e.getTagName() ▓ {0}", e.getTagName());
+			log.tracev("▍e.getTextContent() ▓ {0}", e.getTextContent());
+			// log.tracev("▍e.getParentNode().getTextContent() ▓ {0}", e.getParentNode().getTextContent());
+			log.tracev("▍e.getParentNode().getNodeName() ▓ {0}", e.getParentNode().getNodeName());
+			// log.tracev("▍e.getParentNode().getAttributes().getNamedItem(\"id\") {0}", Long.valueOf(e.getParentNode().getAttributes().getNamedItem("id").getNodeValue()));
+			if (e.getParentNode().getNodeName().equals("knowledge")){
+				Knowledge item = new Knowledge(
+					Long.valueOf(e.getParentNode().getAttributes().getNamedItem("id").getNodeValue()),
+					e.getTextContent()
+				);
+				result.add(item);
+			}
 
-		}*/
-		// TODO: Здесь необходимо сделать конрвертатор из Нодов В Знания
-		return Collections.emptyList();
+		}
+		return result;
 	}
 
 	/**

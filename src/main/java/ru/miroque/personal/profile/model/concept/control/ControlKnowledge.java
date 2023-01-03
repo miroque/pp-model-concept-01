@@ -5,6 +5,8 @@ import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.jboss.resteasy.reactive.RestPath;
+import org.jboss.resteasy.reactive.RestQuery;
+
 import ru.miroque.personal.profile.model.concept.entity.Knowledge;
 
 import javax.ws.rs.*;
@@ -60,7 +62,7 @@ public interface ControlKnowledge {
 	Response itemsAtBranch(@PathParam("id") Long id);
 
 	// @GET
-	@Path("/{id:\\d+}")
+	@Path("/{nid:\\d+}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Operation(
 			operationId = "getSome",
@@ -72,10 +74,19 @@ public interface ControlKnowledge {
 			description = "some resource gettig",
 			content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = Knowledge.class))
 	)
-	Response item(@PathParam("id") Long id);
+	Response item(@PathParam("nid") Long nid);
 
-	// @GET
-	@Path("/{name}")
+	/**
+	 * Странно конечно, что оно не позволило зацепиться на один и тот же "ендпоинт".
+	 * Возможно я что-то упустил в "придумывании" "архитектуры".
+	 * Пока для поиска по названию будет использоваться этот "эндпоинт".
+	 * Дальше возможно это переделаю.
+	 * 
+	 * @param name
+	 * @return
+	 */
+	@GET
+	@Path("/find")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Operation(
 			operationId = "getSome",
@@ -87,7 +98,7 @@ public interface ControlKnowledge {
 			description = "some resource gettig",
 			content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = Knowledge.class))
 	)
-	Response item(@PathParam("name") String value);
+	Response findBy(@RestQuery String name);
 
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
