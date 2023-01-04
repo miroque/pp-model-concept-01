@@ -1,5 +1,6 @@
 # project
 payload/default.ppml
+file-storage/
 
 # ide
 .idea
