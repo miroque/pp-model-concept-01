@@ -7,11 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 [//]: <> (✨ Added, 🛠 Fixed, ♻ Changed, 🔥 Removed)
 
-## [Unreleased]
+## v [0.4.0] - 2023-01-04
 
 ### ✨ Added
 
 - Find method for searching Knowledge with string value
+- Find method for searching Knowledge with nid ("natural"-id)
 
 ## v [0.3.0] - 2023-01-02
 
