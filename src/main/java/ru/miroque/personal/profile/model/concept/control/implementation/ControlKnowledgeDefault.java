@@ -51,9 +51,16 @@ public class ControlKnowledgeDefault implements ControlKnowledge {
 	}
 	
 	@Override
-	public Response item(Long id) {
-		//TODO: implement in SERVICE
-		return Response.status(Response.Status.NOT_FOUND).build();
+	public Response item(Long nid) {
+		log.tracev("🔰[nid]▓{0}", nid);
+		try {
+			log.trace("▍try block");
+			return Response.status(200).entity(service.findByNid(nid)).build();
+		} catch (Exception e) {
+			log.error(e);
+//			throw new ExceptionBadWorkWithXml(String.format(bundle.getString("error.answer.not-found"), id));
+			return Response.serverError().build();
+		}
 	}
 
 	@Override

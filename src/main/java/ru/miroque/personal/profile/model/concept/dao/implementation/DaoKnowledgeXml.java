@@ -114,6 +114,28 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 		}
 	}
 
+	@Override
+	public Knowledge findByNid(Long nid) throws ExceptionBadWorkWithXml{
+		log.infov("🔰[nid]::{0}", nid);
+		try {
+			XPath xPath_Parent = XPathFactory.newInstance().newXPath();
+			Node item = (Node) xPath_Parent.evaluate("/personal-profile/data/descendant-or-self::knowledge[@id=" + nid + "]", data, XPathConstants.NODE);
+			if (item != null){
+				Element e = (Element) item;
+				Knowledge knowledge = new Knowledge(
+					Long.valueOf(e.getParentNode().getAttributes().getNamedItem("id").getNodeValue()),
+					e.getElementsByTagName("name").item(0).getTextContent()
+				);
+				return knowledge;
+			} else {
+				return null;
+			}
+		} catch (XPathExpressionException e) {
+			//TODO: replace i18n
+			throw new ExceptionBadWorkWithXml(e.getMessage());
+		}
+	}
+
 	/**
 	 * Поиск элемента по Имени (на самом деле по текстовому значению). Три
 	 * результата поиска может получиться:
@@ -280,7 +302,6 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		// TODO: Здесь необходимо сделать конрвертатор из Нодов В Знания
 		log.trace("🏁");
 		return items;
 	}
@@ -331,7 +352,6 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		// TODO: Здесь необходимо сделать конрвертатор из Нодов В Знания
 		log.trace("🏁");
 		return items;
 	}

@@ -1,6 +1,7 @@
 package ru.miroque.personal.profile.model.concept.dao;
 
 import ru.miroque.personal.profile.model.concept.entity.Knowledge;
+import ru.miroque.personal.profile.model.concept.exception.ExceptionBadWorkWithXml;
 import ru.miroque.personal.profile.model.concept.exception.ExceptionNotPersisted;
 
 import javax.xml.xpath.XPathExpressionException;
@@ -19,5 +20,7 @@ public interface DaoKnowledge {
 	Collection<Knowledge> finAllInStorage();
 
     Collection<Knowledge> findAllAtBranch(Long id);
+
+	Knowledge findByNid(Long value) throws ExceptionBadWorkWithXml;
 	
 }

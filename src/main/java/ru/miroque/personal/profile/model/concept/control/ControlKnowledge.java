@@ -62,17 +62,17 @@ public interface ControlKnowledge {
 	)
 	Response itemsAtBranch(@PathParam("id") Long id);
 
-	// @GET
+	@GET
 	@Path("/{nid:\\d+}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Operation(
-			operationId = "getSome",
-			summary = "Get some Resource",
-			description = "getting some test resource"
+			operationId = "get-by-nid",
+			summary = "Get Knowledge by nid",
+			description = "Get Knowledge by provided nid"
 	)
 	@APIResponse(
 			responseCode = "200",
-			description = "some resource gettig",
+			description = "Founded Knowledge",
 			content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = Knowledge.class))
 	)
 	Response item(@PathParam("nid") Long nid);

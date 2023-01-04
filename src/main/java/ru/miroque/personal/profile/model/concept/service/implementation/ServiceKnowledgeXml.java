@@ -2,6 +2,7 @@ package ru.miroque.personal.profile.model.concept.service.implementation;
 
 import ru.miroque.personal.profile.model.concept.dao.DaoKnowledge;
 import ru.miroque.personal.profile.model.concept.entity.Knowledge;
+import ru.miroque.personal.profile.model.concept.exception.ExceptionBadWorkWithXml;
 import ru.miroque.personal.profile.model.concept.exception.ExceptionNotPersisted;
 import ru.miroque.personal.profile.model.concept.service.ServiceKnowledge;
 
@@ -50,5 +51,10 @@ public class ServiceKnowledgeXml implements ServiceKnowledge {
 	@Override
 	public Collection<Knowledge> findAllAtBranch(Long id) {
 		return dao.findAllAtBranch(id);
+	}
+
+	@Override
+	public Knowledge findByNid(Long value) throws ExceptionBadWorkWithXml {
+		return dao.findByNid(value);
 	}
 }
