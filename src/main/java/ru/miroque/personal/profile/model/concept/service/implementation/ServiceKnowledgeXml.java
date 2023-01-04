@@ -23,8 +23,8 @@ public class ServiceKnowledgeXml implements ServiceKnowledge {
 	}
 
 	@Override
-	public Collection<Knowledge> findByName(String name) throws XPathExpressionException {
-		return dao.findByName(name);
+	public Collection<Knowledge> findByName(String value) throws XPathExpressionException {
+		return dao.findByName(value);
 	}
 
 	@Override

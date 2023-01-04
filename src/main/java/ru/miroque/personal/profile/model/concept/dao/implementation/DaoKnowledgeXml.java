@@ -130,16 +130,19 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 
 		// Evaluate XPath against Document itself
 		XPath xPath = XPathFactory.newInstance().newXPath();
-		NodeList nodes = (NodeList) xPath.evaluate("/personal-profile/data/descendant-or-self::knowledge/descendant-or-self::name[contains(text(), '"+name+"')]", data, XPathConstants.NODESET);
+		StringBuilder sb = new StringBuilder();
+		sb.append("/personal-profile/data/");
+		sb.append("descendant-or-self::knowledge/");
+		sb.append("descendant-or-self::name[contains(text(), '"+name+"')]");
+		log.tracev("▍sb.toString()▓ {0}", sb.toString());
+
+		NodeList nodes = (NodeList) xPath.evaluate(sb.toString(), data, XPathConstants.NODESET);
 		log.tracev("▍nodes.getLength() ▓ {0}", nodes.getLength());
 		for (int i = 0; i < nodes.getLength(); ++i) {
 			Element e = (Element) nodes.item(i);
-			// log.tracev("▍e ▓ {0}", e);
 			log.tracev("▍e.getTagName() ▓ {0}", e.getTagName());
 			log.tracev("▍e.getTextContent() ▓ {0}", e.getTextContent());
-			// log.tracev("▍e.getParentNode().getTextContent() ▓ {0}", e.getParentNode().getTextContent());
 			log.tracev("▍e.getParentNode().getNodeName() ▓ {0}", e.getParentNode().getNodeName());
-			// log.tracev("▍e.getParentNode().getAttributes().getNamedItem(\"id\") {0}", Long.valueOf(e.getParentNode().getAttributes().getNamedItem("id").getNodeValue()));
 			if (e.getParentNode().getNodeName().equals("knowledge")){
 				Knowledge item = new Knowledge(
 					Long.valueOf(e.getParentNode().getAttributes().getNamedItem("id").getNodeValue()),

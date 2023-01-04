@@ -7,6 +7,7 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.jboss.resteasy.reactive.RestPath;
 import org.jboss.resteasy.reactive.RestQuery;
 
+import io.smallrye.common.constraint.NotNull;
 import ru.miroque.personal.profile.model.concept.entity.Knowledge;
 
 import javax.ws.rs.*;
@@ -89,13 +90,13 @@ public interface ControlKnowledge {
 	@Path("/find")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Operation(
-			operationId = "getSome",
-			summary = "Get some Resource",
-			description = "getting some test resource"
+			operationId = "find-by-name",
+			summary = "Find a Knowledge by name",
+			description = "Find a Knowledge contains a searchable string"
 	)
 	@APIResponse(
 			responseCode = "200",
-			description = "some resource gettig",
+			description = "Founded Knowledge or Knowledges",
 			content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = Knowledge.class))
 	)
 	Response findBy(@RestQuery String name);

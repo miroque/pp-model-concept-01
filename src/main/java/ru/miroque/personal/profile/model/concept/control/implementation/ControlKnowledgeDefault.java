@@ -58,7 +58,7 @@ public class ControlKnowledgeDefault implements ControlKnowledge {
 
 	@Override
 	public Response findBy(String value) {
-		log.tracev("▍value ▓ {0}", value);
+		log.tracev("🔰[value]▓{0}", value);
 		try {
 			log.trace("▍try block");
 			return Response.status(200).entity(service.findByName(value)).build();

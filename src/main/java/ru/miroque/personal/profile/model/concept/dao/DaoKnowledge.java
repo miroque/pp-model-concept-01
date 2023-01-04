@@ -14,7 +14,7 @@ public interface DaoKnowledge {
 	
     Collection<Knowledge> findAllAtRoot();
 	
-	Collection<Knowledge> findByName(String name) throws XPathExpressionException;
+	Collection<Knowledge> findByName(String value) throws XPathExpressionException;
 
 	Collection<Knowledge> finAllInStorage();
 

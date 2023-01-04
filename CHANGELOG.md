@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 [//]: <> (✨ Added, 🛠 Fixed, ♻ Changed, 🔥 Removed)
 
+## [Unreleased]
+
+### ✨ Added
+
+- Find method for searching Knowledge with string value
+
 ## v [0.3.0] - 2023-01-02
 
 ### ✨ Added
