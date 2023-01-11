@@ -11,6 +11,7 @@ import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 import javax.xml.xpath.XPathExpressionException;
 import java.util.Collection;
+import java.util.UUID;
 
 @Default
 @ApplicationScoped
@@ -49,12 +50,12 @@ public class ServiceKnowledgeXml implements ServiceKnowledge {
 	}
 
 	@Override
-	public Collection<Knowledge> findAllAtBranch(Long id) {
+	public Collection<Knowledge> findAllAtBranch(UUID id) {
 		return dao.findAllAtBranch(id);
 	}
 
 	@Override
-	public Knowledge findByNid(Long value) throws ExceptionBadWorkWithXml {
+	public Knowledge findByNid(UUID value) throws ExceptionBadWorkWithXml {
 		return dao.findByNid(value);
 	}
 }
