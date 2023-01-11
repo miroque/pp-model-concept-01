@@ -2,29 +2,27 @@ package ru.miroque.personal.profile.model.concept.entity;
 
 
 import java.util.Objects;
+import java.util.UUID;
 
 public class Knowledge {
-	/**
-	 * Ага, даже лог у меня тут стоит.
-	 * И надо будет заморачиваться над генерацией уникального, значения.
-	 */
-	private Long id;
+
+	private UUID id;
 	private String name;
 
 	public Knowledge() {
 		this(null, null);
 	}
 
-	public Knowledge(Long id, String name) {
+	public Knowledge(UUID id, String name) {
 		this.id = id;
 		this.name = name;
 	}
 
-	public Long getId() {
+	public UUID getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(UUID id) {
 		this.id = id;
 	}
 
