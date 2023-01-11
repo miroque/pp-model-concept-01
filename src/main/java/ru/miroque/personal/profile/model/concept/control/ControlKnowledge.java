@@ -7,8 +7,9 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.jboss.resteasy.reactive.RestPath;
 import org.jboss.resteasy.reactive.RestQuery;
 
-import io.smallrye.common.constraint.NotNull;
 import ru.miroque.personal.profile.model.concept.entity.Knowledge;
+
+import java.util.UUID;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -60,7 +61,7 @@ public interface ControlKnowledge {
 			description = "some resource gettig",
 			content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = Knowledge.class))
 	)
-	Response itemsAtBranch(@PathParam("id") Long id);
+	Response itemsAtBranch(@PathParam("nid") UUID nid);
 
 	@GET
 	@Path("/{nid:\\d+}")
@@ -75,7 +76,7 @@ public interface ControlKnowledge {
 			description = "Founded Knowledge",
 			content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = Knowledge.class))
 	)
-	Response item(@PathParam("nid") Long nid);
+	Response item(@PathParam("nid") UUID nid);
 
 	/**
 	 * Странно конечно, что оно не позволило зацепиться на один и тот же "ендпоинт".
@@ -128,5 +129,5 @@ public interface ControlKnowledge {
 			description = "setting end return updated Knowledge with parent",
 			content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = Knowledge.class))
 	)
-	Response set(@RestPath Long id , Knowledge item);
+	Response set(@RestPath UUID id , Knowledge item);
 }

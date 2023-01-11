@@ -1,5 +1,7 @@
 package ru.miroque.personal.profile.model.concept.control.implementation;
 
+import java.util.UUID;
+
 import javax.inject.Inject;
 import javax.ws.rs.core.Response;
 
@@ -40,9 +42,10 @@ public class ControlKnowledgeDefault implements ControlKnowledge {
 	}
 
 	@Override
-	public Response itemsAtBranch(Long id) {
+	public Response itemsAtBranch(UUID nid) {
+		log.tracev("🔰[nid]▓{0}", nid);
 		try {
-			return Response.status(200).entity(service.findAllAtBranch(id)).build();
+			return Response.status(200).entity(service.findAllAtBranch(nid)).build();
 		} catch (Exception e) {
 			log.error(e);
 //			throw new ExceptionBadWorkWithXml(String.format(bundle.getString("error.answer.not-found"), id));
@@ -51,7 +54,7 @@ public class ControlKnowledgeDefault implements ControlKnowledge {
 	}
 	
 	@Override
-	public Response item(Long nid) {
+	public Response item(UUID nid) {
 		log.tracev("🔰[nid]▓{0}", nid);
 		try {
 			log.trace("▍try block");
@@ -89,12 +92,12 @@ public class ControlKnowledgeDefault implements ControlKnowledge {
 	}
 
 	@Override
-	public Response set(Long id, Knowledge item) {
-		log.infov("Set of One Knowledge AND PARENT. <>> id::{0}::item::{1}::", id, item);
+	public Response set(UUID nid, Knowledge item) {
+		log.infov("Set of One Knowledge AND PARENT. <>> nid::{0}::item::{1}::", nid, item);
 		// log.debugv("Set of One Knowledge AND PARENT. <>> id::{0}::item::{1}::", id, item);
 		// log.tracev("Set of One Knowledge AND PARENT. <>> id::{0}::item::{1}::", id, item);
 		try {
-			var dumb = new Knowledge(id, null);
+			var dumb = new Knowledge(nid, null);
 			service.set(dumb, item);
 			return Response.ok("{\"status\":\"saved\"}").build();
 		} catch (ExceptionNotPersisted e) {
