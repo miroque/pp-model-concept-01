@@ -6,6 +6,7 @@ import ru.miroque.personal.profile.model.concept.exception.ExceptionNotPersisted
 
 import javax.xml.xpath.XPathExpressionException;
 import java.util.Collection;
+import java.util.UUID;
 
 public interface DaoKnowledge {
 
@@ -19,8 +20,8 @@ public interface DaoKnowledge {
 
 	Collection<Knowledge> finAllInStorage();
 
-    Collection<Knowledge> findAllAtBranch(Long id);
+    Collection<Knowledge> findAllAtBranch(UUID id);
 
-	Knowledge findByNid(Long value) throws ExceptionBadWorkWithXml;
+	Knowledge findByNid(UUID value) throws ExceptionBadWorkWithXml;
 	
 }

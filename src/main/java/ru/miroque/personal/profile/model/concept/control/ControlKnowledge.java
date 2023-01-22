@@ -49,7 +49,7 @@ public interface ControlKnowledge {
 	Response itemsAtRoot();
 
 	@GET
-	@Path("/b/{id:\\d+}")
+	@Path("/b/{nid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Operation(
 			operationId = "getAllBranch",
@@ -64,7 +64,7 @@ public interface ControlKnowledge {
 	Response itemsAtBranch(@PathParam("nid") UUID nid);
 
 	@GET
-	@Path("/{nid:\\d+}")
+	@Path("/{nid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Operation(
 			operationId = "get-by-nid",
@@ -117,7 +117,7 @@ public interface ControlKnowledge {
 	Response set(Knowledge item);
 
 	@POST
-	@Path("/{id:\\d+}")
+	@Path("/{nid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Operation(
 			operationId = "set Knowledge with parent",
@@ -129,5 +129,5 @@ public interface ControlKnowledge {
 			description = "setting end return updated Knowledge with parent",
 			content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = Knowledge.class))
 	)
-	Response set(@RestPath UUID id , Knowledge item);
+	Response set(@RestPath UUID nid , Knowledge item);
 }

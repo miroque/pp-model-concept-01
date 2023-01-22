@@ -10,6 +10,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [unreleased] 
 
+### ✨ Added
+
+- added UUID type, with autogenerate-value if *id/nid* is null
+
+### ♻ Changed
+
+- in most cases *id* ➡️ *nid*
+- *id/nid* - **String** ➡️ **UUID**
+
 ## v [0.4.0] - 2023-01-04
 
 ### ✨ Added

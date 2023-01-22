@@ -7,8 +7,8 @@ import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Default;
@@ -115,15 +115,17 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 	}
 
 	@Override
-	public Knowledge findByNid(Long nid) throws ExceptionBadWorkWithXml{
+	public Knowledge findByNid(UUID nid) throws ExceptionBadWorkWithXml{
 		log.infov("🔰[nid]::{0}", nid);
 		try {
 			XPath xPath_Parent = XPathFactory.newInstance().newXPath();
-			Node item = (Node) xPath_Parent.evaluate("/personal-profile/data/descendant-or-self::knowledge[@id=" + nid + "]", data, XPathConstants.NODE);
+			String path = "/personal-profile/data/descendant-or-self::knowledge[@id='" + nid + "']";
+			log.tracev("path::{0}", path);
+			Node item = (Node) xPath_Parent.evaluate(path, data, XPathConstants.NODE);
 			if (item != null){
 				Element e = (Element) item;
 				Knowledge knowledge = new Knowledge(
-					Long.valueOf(e.getParentNode().getAttributes().getNamedItem("id").getNodeValue()),
+					UUID.fromString(e.getAttributes().getNamedItem("id").getNodeValue()),
 					e.getElementsByTagName("name").item(0).getTextContent()
 				);
 				return knowledge;
@@ -167,7 +169,7 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 			log.tracev("▍e.getParentNode().getNodeName() ▓ {0}", e.getParentNode().getNodeName());
 			if (e.getParentNode().getNodeName().equals("knowledge")){
 				Knowledge item = new Knowledge(
-					Long.valueOf(e.getParentNode().getAttributes().getNamedItem("id").getNodeValue()),
+					UUID.fromString(e.getParentNode().getAttributes().getNamedItem("id").getNodeValue()),
 					e.getTextContent()
 				);
 				result.add(item);
@@ -186,18 +188,28 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 		log.infov("🔰[item]::{0}", item);
 		try {
 			XPath xPath = XPathFactory.newInstance().newXPath();
-			NodeList nodes = (NodeList) xPath.evaluate("//name[text()='" + item.getName() + "']", data, XPathConstants.NODESET);
-			if (nodes.getLength() == 0) {
+			if (item.getId() == null) {
 				generateNewKnowledgeNode(item, data);
 				saveXmlFile();
 				log.infov("saved new Knowledge::{0}", item);
-
-			} else if (nodes.getLength() == 1) {
-				//TODO: replace i18n
-				throw new ExceptionNotPersisted("Уже есть такой элемент в \"Хранилище\"");
 			} else {
-				//TODO: replace i18n
-				throw new ExceptionNotPersisted("Нашлось несколько элементов в \"Хранилище\", вообще-то это невозможный вариант");
+				NodeList nodes = (NodeList) xPath.evaluate("//knowledge[@id='" + item.getId() + "']", data, XPathConstants.NODESET);
+				if (nodes.getLength() == 0) {
+					generateNewKnowledgeNode(item, data);
+					saveXmlFile();
+					log.infov("saved new Knowledge::{0}", item);
+
+				} else if (nodes.getLength() == 1) {
+					Element node = (Element) nodes.item(0);
+					node.getElementsByTagName("name").item(0).setTextContent(item.getName());
+					saveXmlFile();
+					log.info("update current node");
+					// //TODO: replace i18n
+					// throw new ExceptionNotPersisted("Уже есть такой элемент в \"Хранилище\"");
+				} else {
+					//TODO: replace i18n
+					throw new ExceptionNotPersisted("Нашлось несколько элементов в \"Хранилище\", вообще-то это невозможный вариант");
+				}
 			}
 		} catch (XPathExpressionException e) {
 			//TODO: replace i18n
@@ -214,12 +226,12 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 		log.infov("🔰[descendant]::{0}", descendant);
 		try {
 			XPath xPath_Parent = XPathFactory.newInstance().newXPath();
-			Node node_Parent = (Node) xPath_Parent.evaluate("/personal-profile/data/descendant-or-self::knowledge[@id=" + parent.getId() + "]", data, XPathConstants.NODE);
+			Node node_Parent = (Node) xPath_Parent.evaluate("/personal-profile/data/descendant-or-self::knowledge[@id='" + parent.getId() + "']", data, XPathConstants.NODE);
 			// Родительский элемент -- да
 			log.tracev("🔸 [node_Parent]::{0}", node_Parent);
 			if (node_Parent != null) {
 				XPath  xPath_Descendant = XPathFactory.newInstance().newXPath();
-				Node node_Descendant = (Node) xPath_Descendant.evaluate("self::*/knowledge[@id=" + descendant.getId() + "]", node_Parent, XPathConstants.NODE);
+				Node node_Descendant = (Node) xPath_Descendant.evaluate("self::*/knowledge[@id='" + descendant.getId() + "']", node_Parent, XPathConstants.NODE);
 				// элемент Потомок -- да
 				log.tracev("🔸 [node_Descendant]::{0}", node_Descendant);
 				if (node_Descendant != null) {
@@ -250,7 +262,10 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 
 	private void generateNewKnowledgeNode(Knowledge item, Node parentNode) {
 		Element childKnowledge = storage.createElement("knowledge");
-		childKnowledge.setAttribute("id", item.getId().toString());
+
+		childKnowledge.setAttribute("id",
+			item.getId() == null ? UUID.randomUUID().toString() : item.getId().toString()
+		);
 
 		Element name = storage.createElement("name");
 		name.appendChild(storage.createTextNode(item.getName()));
@@ -273,7 +288,7 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 		for (int i = 0; i < itemsRaw.getLength(); i++) {
 			Knowledge item = new Knowledge();
 			Element node = (Element) itemsRaw.item(i);
-			item.setId(Long.valueOf(node.getAttributes().getNamedItem("id").getNodeValue()));
+			item.setId(UUID.fromString(node.getAttributes().getNamedItem("id").getNodeValue()));
 			item.setName(node.getElementsByTagName("name").item(0).getTextContent());
 			log.tracev("♻ 🔸 [item]::{0}", item);
 			items.add(item);
@@ -293,7 +308,7 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 			for (int i = 0; i < itemsRaw.getLength(); i++) {
 				Knowledge item = new Knowledge();
 				Element node = (Element) itemsRaw.item(i);
-				item.setId(Long.valueOf(node.getAttributes().getNamedItem("id").getNodeValue()));
+				item.setId(UUID.fromString(node.getAttributes().getNamedItem("id").getNodeValue()));
 				item.setName(node.getElementsByTagName("name").item(0).getTextContent());
 				log.tracev("♻ 🔸 [item]::{0}", item);
 				items.add(item);
@@ -333,17 +348,17 @@ public class DaoKnowledgeXml implements DaoKnowledge {
 	}
 
 	@Override
-	public Collection<Knowledge> findAllAtBranch(Long id) {
+	public Collection<Knowledge> findAllAtBranch(UUID nid) {
 		log.trace("🚩");
 		List<Knowledge> items = new ArrayList<Knowledge>();
 		try {
 			XPath xPath = XPathFactory.newInstance().newXPath();
-			NodeList itemsRaw = (NodeList) xPath.evaluate("/personal-profile/data/descendant-or-self::knowledge[@id=" + id + "]/descendant::knowledge", data, XPathConstants.NODESET);
+			NodeList itemsRaw = (NodeList) xPath.evaluate("/personal-profile/data/descendant-or-self::knowledge[@id='" + nid + "']/descendant::knowledge", data, XPathConstants.NODESET);
 			log.tracev("🔸 [itemsRaw.size]::{0}", itemsRaw.getLength());
 			for (int i = 0; i < itemsRaw.getLength(); i++) {
 				Knowledge item = new Knowledge();
 				Element node = (Element) itemsRaw.item(i);
-				item.setId(Long.valueOf(node.getAttributes().getNamedItem("id").getNodeValue()));
+				item.setId(UUID.fromString(node.getAttributes().getNamedItem("id").getNodeValue()));
 				item.setName(node.getElementsByTagName("name").item(0).getTextContent());
 				log.tracev("♻ 🔸 [item]::{0}", item);
 				items.add(item);
